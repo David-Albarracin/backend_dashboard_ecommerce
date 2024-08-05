@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.AccountRoleService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.AccountRole;
-
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.AccountRolePk;
 import jakarta.validation.Valid;
 
 @RestController
@@ -40,7 +40,7 @@ public class AccountRoleController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
-    public ResponseEntity<AccountRole> view(@PathVariable Long id){
+    public ResponseEntity<AccountRole> view(@PathVariable AccountRolePk id){
         Optional<AccountRole> optionalAccountRole  = account_roleService.findById(id);
         if (optionalAccountRole.isPresent()){
             return ResponseEntity.ok(optionalAccountRole.orElseThrow());
@@ -59,7 +59,7 @@ public class AccountRoleController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<AccountRole> update(@PathVariable Long id, @Valid @RequestBody AccountRole account_role){
+    public ResponseEntity<AccountRole> update(@PathVariable AccountRolePk id, @Valid @RequestBody AccountRole account_role){
         Optional<AccountRole> account_roleOptional = this.account_roleService.update(id, account_role);
         if (account_roleOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(account_roleOptional.orElseThrow());
@@ -69,7 +69,7 @@ public class AccountRoleController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
-    public ResponseEntity<AccountRole> delete(@PathVariable Long id){
+    public ResponseEntity<AccountRole> delete(@PathVariable AccountRolePk id){
         //AccountRole account_role = new AccountRole();
         //account_role.setId(id);
         Optional<AccountRole> optionalAccountRole = this.account_roleService.delete(id);

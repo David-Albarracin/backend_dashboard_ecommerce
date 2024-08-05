@@ -36,6 +36,10 @@ public class ProductService {
         return this.productRepository.findById(id);
     }
 
+    public List<Product> findByGama(String gamaName) {
+        return this.productRepository.findByGama(gamaName);
+    }
+
     public Product save(Product Product) {
         return this.productRepository.save(Product);
     }

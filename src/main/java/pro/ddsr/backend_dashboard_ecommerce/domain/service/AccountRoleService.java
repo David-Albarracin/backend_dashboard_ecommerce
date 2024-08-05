@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.AccountRoleRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.AccountRole;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.AccountRolePk;
 
 @Service
 public class AccountRoleService {
@@ -18,7 +19,7 @@ public class AccountRoleService {
     AccountRoleRepository account_roleRepository;
     
     @Transactional
-    public Optional<AccountRole> delete(Long id) {
+    public Optional<AccountRole> delete(AccountRolePk id) {
         Optional<AccountRole> optionalAccountRole = this.account_roleRepository.findById(id);
         optionalAccountRole.ifPresent(
             AccountRoleFound -> {
@@ -32,7 +33,7 @@ public class AccountRoleService {
         return (List<AccountRole>) this.account_roleRepository.findAll();
     }
 
-    public Optional<AccountRole> findById(Long id) {
+    public Optional<AccountRole> findById(AccountRolePk id) {
         return this.account_roleRepository.findById(id);
     }
 
@@ -40,7 +41,7 @@ public class AccountRoleService {
         return this.account_roleRepository.save(AccountRole);
     }
 
-    public Optional<AccountRole> update(Long id, AccountRole account_role) {
+    public Optional<AccountRole> update(AccountRolePk id, AccountRole account_role) {
         Optional<AccountRole> optionalAccountRole = this.account_roleRepository.findById(id);
         if (optionalAccountRole.isPresent()) {
             AccountRole account_roleItem = optionalAccountRole.orElseThrow();
