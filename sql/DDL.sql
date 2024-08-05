@@ -1,3 +1,4 @@
+
 -- -----------------------------------------------------
 -- Crear Base de datos
 -- -----------------------------------------------------
@@ -8,7 +9,14 @@ CREATE DATABASE ecommerce;
 
 USE ecommerce;
 
-
+-- -----------------------------------------------------
+-- Table `role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `role` (
+  `role_id` INT AUTO_INCREMENT NOT NULL,
+  `name` ENUM('ADMIN', 'USER') NOT NULL,
+  PRIMARY KEY (`role_id`))
+ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `account`
 -- -----------------------------------------------------
@@ -19,25 +27,12 @@ CREATE TABLE IF NOT EXISTS `account` (
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL,
   `isActive` TINYINT(1) NOT NULL,
-  `rol_id` INT NOT NULL,
   PRIMARY KEY (`account_id`),
   UNIQUE INDEX `account_id` (`account_id` ASC) ,
-  UNIQUE INDEX `email` (`email` ASC),
-  CONSTRAINT `fk_rol_id`
-    FOREIGN KEY (`rol_id`)
-    REFERENCES `role` (`role_id`))
+  UNIQUE INDEX `email` (`email` ASC))
 ENGINE = InnoDB;
 
 
-
--- -----------------------------------------------------
--- Table `role`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `role` (
-  `role_id` INT AUTO_INCREMENT NOT NULL,
-  `name` ENUM('ADMIN', 'USER') NOT NULL,
-  PRIMARY KEY (`role_id`))
-ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `permission`
@@ -73,10 +68,41 @@ CREATE TABLE IF NOT EXISTS `account_role` (
   CONSTRAINT `fk_account_id`
     FOREIGN KEY (`account_id`)
     REFERENCES `account` (`account_id`),
-  CONSTRAINT `fk_role_id`
+  CONSTRAINT `fk_account_role`
     FOREIGN KEY (`role_id`)
     REFERENCES `role` (`role_id`))
 ENGINE = InnoDB;
+
+-- NORMALIZACION DE DIRECCION
+-- -----------------------------------------------------
+-- Table `country`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `country` (
+  `country_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(70) NOT NULL,
+  PRIMARY KEY (`country_id`)
+  ) ENGINE = InnoDB;
+  
+  
+ -- -----------------------------------------------------
+-- Table `region`
+-- -----------------------------------------------------
+  CREATE TABLE IF NOT EXISTS `region` (
+  `region_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `country_id` INT NOT NULL,
+  PRIMARY KEY (`region_id`),
+    CONSTRAINT `fk_region_country`
+    FOREIGN KEY (`country_id`)
+    REFERENCES `country` (`country_id`)
+) ENGINE = InnoDB;
+/*
+  -- -----------------------------------------------------
+A `city` solo se le cambiaría la llave foranea a pais de VARCHAR(50) por
+una llave foranea de tipo INT hacia region
+-- -----------------------------------------------------
+*/
 
 -- -----------------------------------------------------
 -- Table `city`
@@ -84,43 +110,73 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `city` (
   `city_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
-  `state` VARCHAR(50) NOT NULL,
-  `country` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`city_id`))
-ENGINE = InnoDB;
+  `region_id` INT NOT NULL,
+  PRIMARY KEY (`city_id`),
+    CONSTRAINT `fk_city_region`
+    FOREIGN KEY (`region_id`)
+    REFERENCES `region` (`region_id`)
+  )ENGINE = InnoDB;
 
 
+  
+
+ -- =================> CLIENTES <=============================
 -- -----------------------------------------------------
 -- Table `customer`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
-  `customer_id` VARCHAR(255) NOT NULL,
+  `customer_id` INT NOT NULL AUTO_INCREMENT, -- la tabla original tiene el id como integer 
   `account_id` VARCHAR(255) NOT NULL,
   `first_name` VARCHAR(255) NOT NULL,
-  `second_name` VARCHAR(255) NOT NULL,
   `first_surname` VARCHAR(255) NOT NULL,
-  `second_surname` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
+  `last_surname` VARCHAR(255) NOT NULL,
   `document_number` VARCHAR(255) NOT NULL,
-  `document_type` VARCHAR(255) NOT NULL,
-  `phone_number` VARCHAR(255) NOT NULL,
+  `document_type` ENUM('Cedula Ciudadania', 'Cedula Extranjeria', 'NIT', 'Pasaporte') NOT NULL,
   `employee_id` VARCHAR(255) NOT NULL,
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL,
-  `city_id` INT NOT NULL,
   PRIMARY KEY (`customer_id`),
   UNIQUE INDEX `customer_id` (`customer_id` ASC) ,
   UNIQUE INDEX `account_id` (`account_id` ASC) ,
-  INDEX `fk_customer_city1_idx` (`city_id` ASC) ,
   CONSTRAINT `fk_customer_account`
     FOREIGN KEY (`account_id`)
-    REFERENCES `account` (`account_id`),
-  CONSTRAINT `fk_customer_city1`
-    FOREIGN KEY (`city_id`)
-    REFERENCES `city` (`city_id`)
+    REFERENCES `account` (`account_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `customer_address`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `customer_address` (
+  `customer_address_id` INT NOT NULL AUTO_INCREMENT,
+  `address_line1` VARCHAR(50) NOT NULL,
+  `address_line2` VARCHAR(50) NOT NULL,
+  `customer_id` INT NOT NULL,
+  `city_id` INT NOT NULL,
+  CONSTRAINT `fk_address_customer_city` 
+  	FOREIGN KEY(`city_id`) REFERENCES `city`(`city_id`),
+  CONSTRAINT `fk_address_customer` 
+  	FOREIGN KEY(`customer_id`) REFERENCES `customer`(`customer_id`),
+  PRIMARY KEY (`customer_address_id`)
+  )ENGINE = InnoDB;
+  
+ -- -----------------------------------------------------
+-- Table `customer_phones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `customer_phone` (
+  `customer_phone_id` INT NOT NULL AUTO_INCREMENT,
+  `phone_number` VARCHAR(50) NOT NULL,
+  `telephone_type` ENUM('Fijo', 'Celular') NOT NULL,
+  `customer_id` INT NOT NULL,
+  CONSTRAINT `fk_customer_phones` 
+  	FOREIGN KEY(`customer_id`) REFERENCES `customer`(`customer_id`),
+  PRIMARY KEY (`customer_phone_id`)
+  )ENGINE = InnoDB;
+  
+  
 
 -- -----------------------------------------------------
 -- Table `order_status`
@@ -133,59 +189,82 @@ CREATE TABLE IF NOT EXISTS `order_status` (
   PRIMARY KEY (`order_status_id`))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
--- Table `suppliers`
+-- Table `order`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `suppliers` (
-  `supplier_id` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
-  `contact_name` VARCHAR(50) NULL DEFAULT NULL,
-  `email` VARCHAR(100) NULL DEFAULT NULL,
-  `address_line1` VARCHAR(50) NOT NULL,
-  `address_line2` VARCHAR(50) NOT NULL,
-  `city_id` INT NOT NULL,
-  `phone_number` VARCHAR(20) NOT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`supplier_id`),
-  INDEX `fk_supplier_city` (`city_id` ASC) ,
-  CONSTRAINT `fk_supplier_city`
-    FOREIGN KEY (`city_id`)
-    REFERENCES `city` (`city_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `orders`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `orders` (
+CREATE TABLE IF NOT EXISTS `order` (
   `order_id` INT NOT NULL AUTO_INCREMENT,
   `order_date` DATE NULL DEFAULT NULL,
   `expected_date` DATE NULL DEFAULT NULL,
   `deliver_date` DATE NULL DEFAULT NULL,
   `commentary` VARCHAR(45) NULL DEFAULT NULL,
   `status_id` INT NOT NULL,
-  `order_type` ENUM('compra', 'venta') NULL,
-  `client_id` VARCHAR(255) NOT NULL,
+  `order_type` ENUM('Compra', 'Venta') NULL,
+  `customer_id` INT NOT NULL,
   PRIMARY KEY (`order_id`),
   INDEX `fk_customer_order_order_status1_idx` (`status_id` ASC) ,
-  INDEX `fk_client_id_idx` (`client_id` ASC) ,
-  CONSTRAINT `fk_customer_order_order_status1`
+  INDEX `fk_client_id_idx` (`customer_id` ASC) , -- INDICE para seleccionar pedidos de clientes 
+  CONSTRAINT `fk_customer_order_order_status1` -- indice para seleccionar pedidos por edtado 
     FOREIGN KEY (`status_id`)
     REFERENCES `order_status` (`order_status_id`),
-  CONSTRAINT `fk_suppliers_id`
-    FOREIGN KEY (`client_id`)
-    REFERENCES `suppliers` (`supplier_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_customer_id`
-    FOREIGN KEY (`client_id`)
+  CONSTRAINT `fk_customer_id` -- se elimina la llave foranea hacia suppliers
+    FOREIGN KEY (`customer_id`)
     REFERENCES `customer` (`customer_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+
+
+
+
+  
+-- -----------------------------------------------------
+-- Table `suppliers`
+-- -----------------------------------------------------
+DROP TABLE IF  EXISTS `supplier`;
+CREATE TABLE IF NOT EXISTS `supplier` (
+  `supplier_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `contact_name` VARCHAR(50) NULL DEFAULT NULL,
+  `email` VARCHAR(100) NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`supplier_id`)
+)ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `supplier_phones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `supplier_phone` (
+  `supplier_phone_id` INT NOT NULL AUTO_INCREMENT,
+  `phone_number` VARCHAR(50) NOT NULL,
+  `telephone_type` ENUM('Fijo', 'Celular') NOT NULL,
+  `supplier_id` INT NOT NULL,
+  CONSTRAINT `fk_supplier_phone`
+  	FOREIGN KEY(`supplier_id`) REFERENCES `supplier`(`supplier_id`),
+  PRIMARY KEY (`supplier_phone_id`)
+  )ENGINE = InnoDB;
+  
+-- -----------------------------------------------------
+-- Table `supplier_addresses`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `supplier_address` (
+  `supplier_addresses_id` INT NOT NULL AUTO_INCREMENT,
+  `address_line1` VARCHAR(50) NOT NULL,
+  `address_line2` VARCHAR(50) NOT NULL,
+  `supplier_id` INT NOT NULL,
+  `city_id` INT NOT NULL,
+  CONSTRAINT `fk_address_suppliers_city` 
+  	FOREIGN KEY(`city_id`) REFERENCES `city`(`city_id`),
+  CONSTRAINT `fk_suppplier_addresses` 
+  	FOREIGN KEY(`supplier_id`) REFERENCES `supplier`(`supplier_id`),
+  PRIMARY KEY (`supplier_addresses_id`)
+  )ENGINE = InnoDB;
+
+
+  
 
 -- -----------------------------------------------------
 -- Table `office`
@@ -196,12 +275,48 @@ CREATE TABLE IF NOT EXISTS `office` (
   `address_line2` VARCHAR(50) NOT NULL,
   `city_id` INT NOT NULL,
   `phone_number` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`office_id`),
-  INDEX `fk_office_city` (`city_id` ASC) ,
-  CONSTRAINT `fk_office_city`
-    FOREIGN KEY (`city_id`)
-    REFERENCES `city` (`city_id`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`office_id`)
+  )ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `office_phone`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `office_phone` (
+  `office_phone_id` INT NOT NULL AUTO_INCREMENT,
+  `phone_number` VARCHAR(50) NOT NULL,
+  `telephone_type` ENUM('Fijo', 'Celular') NOT NULL,
+  `office_id` VARCHAR(10) NOT NULL,
+  CONSTRAINT `fk_office_phones` 
+  	FOREIGN KEY(`office_id`) REFERENCES `office`(`office_id`),
+  PRIMARY KEY (`office_phone_id`)
+  )ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `office_address`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `office_address` (
+  `office_addresses_id` INT NOT NULL AUTO_INCREMENT,
+  `address_line1` VARCHAR(50) NOT NULL,
+  `address_line2` VARCHAR(50) NOT NULL,
+  `office_id` VARCHAR(10) NOT NULL,
+  `city_id` INT NOT NULL,
+  CONSTRAINT `fk_address_office_city` 
+  	FOREIGN KEY(`city_id`) REFERENCES `city`(`city_id`),
+  CONSTRAINT `fk_address_office` 
+  	FOREIGN KEY(`office_id`) REFERENCES `office`(`office_id`),
+  PRIMARY KEY (`office_addresses_id`)
+  )ENGINE = InnoDB;
+  
+
+-- -----------------------------------------------------
+-- Table `charge` -> Tabla de posicion del empleado
+-- -----------------------------------------------------
+CREATE TABLE charge(
+	`charge_id` INT NOT NULL  AUTO_INCREMENT,
+	`charge_name` VARCHAR(50) NOT NULL,
+	CONSTRAINT `pk_charge` PRIMARY KEY(`charge_id`)
+)ENGINE = INNODB;
+
 
 
 -- -----------------------------------------------------
@@ -215,11 +330,11 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `first_surname` VARCHAR(255) NOT NULL,
   `second_surname` VARCHAR(255) NOT NULL,
   `document_number` VARCHAR(255) NOT NULL,
-  `document_type` VARCHAR(255) NOT NULL,
+  `document_type` ENUM('Cedula Ciudadania', 'Cedula Extranjeria', 'NIT', 'Pasaporte') NOT NULL,
   `phone_number` VARCHAR(255) NOT NULL,
   `office_id` VARCHAR(255) NOT NULL,
-  `extension` VARCHAR(255) NOT NULL,
-  `position` VARCHAR(255) NOT NULL,
+  `extension` INT NOT NULL,
+  `charge_id` INT NOT NULL,
   `created_at` TIMESTAMP NOT NULL,
   `updated_at` DATETIME NOT NULL,
   `boss_id` VARCHAR(255) NOT NULL,
@@ -234,6 +349,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
   CONSTRAINT `fk_employee_office`
     FOREIGN KEY (`office_id`)
     REFERENCES `office` (`office_id`),
+  CONSTRAINT `fk_employee_charge`
+    FOREIGN KEY (`charge_id`)
+    REFERENCES `charge` (`charge_id`),
   CONSTRAINT `fk_employee_boss`
     FOREIGN KEY (`boss_id`)
     REFERENCES `employee` (`employee_id`)
@@ -268,13 +386,13 @@ CREATE TABLE IF NOT EXISTS `product` (
   `price_buy` INT NULL DEFAULT NULL,
   PRIMARY KEY (`product_id`),
   UNIQUE INDEX `code_UNIQUE` (`code` ASC) ,
-  INDEX `fk_product_product_gama_idx` (`gama_id` ASC) ,
+  INDEX `fk_product_product_gama_idx` (`gama_id` ASC) , -- INDICE de busqueda de productos por gama(CU 07)
   CONSTRAINT `fk_product_product_gama`
     FOREIGN KEY (`gama_id`)
     REFERENCES `product_gama` (`product_gama_id`))
 ENGINE = InnoDB;
 
-
+CREATE INDEX idx_stock ON product (stock); -- INDICE de busqueda de productos bajos de stock(CU 12)
 -- -----------------------------------------------------
 -- Table `order_detail`
 -- -----------------------------------------------------
@@ -289,7 +407,7 @@ CREATE TABLE IF NOT EXISTS `order_detail` (
   INDEX `fk_order_detail_customer_order1_idx` (`customer_order_id` ASC) ,
   CONSTRAINT `fk_order_detail_customer_order1`
     FOREIGN KEY (`customer_order_id`)
-    REFERENCES `orders` (`order_id`),
+    REFERENCES `order` (`order_id`),
   CONSTRAINT `fk_order_detail_product1`
     FOREIGN KEY (`product_id`)
     REFERENCES `product` (`product_id`))
@@ -297,9 +415,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `pay_methods`
+-- Table `pay_method`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pay_methods` (
+CREATE TABLE IF NOT EXISTS `pay_method` (
   `pay_method_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
@@ -308,9 +426,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `transactions`
+-- Table `transaction`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `transactions` (
+CREATE TABLE IF NOT EXISTS `transaction` (
   `transaction_id` INT NOT NULL AUTO_INCREMENT,
   `amount` DECIMAL(10,2) NOT NULL,
   `transaction_date` DATETIME NOT NULL,
@@ -321,11 +439,10 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   INDEX `fk_transactions_orders1_idx` (`order_id` ASC) ,
   CONSTRAINT `fk_transaction_pay_method`
     FOREIGN KEY (`pay_method_id`)
-    REFERENCES `pay_methods` (`pay_method_id`),
+    REFERENCES `pay_method` (`pay_method_id`),
   CONSTRAINT `fk_transactions_orders1`
     FOREIGN KEY (`order_id`)
-    REFERENCES `orders` (`order_id`)
+    REFERENCES `order` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
