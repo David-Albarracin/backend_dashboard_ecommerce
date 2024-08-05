@@ -1,6 +1,7 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +24,12 @@ public class PayMethod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long payMethodId;
+
+       @Column(length = 50, nullable = false)
+    private String name;
+
+    @Column(length = 255)
+    private String description;
 
 }

@@ -1,10 +1,12 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +25,24 @@ public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long orderDetailId;
+
+     @Column
+    private Byte amount;
+
+    @Column
+    private Integer unitPrice;
+
+    @Column
+    private Integer totalPrice;
+
+    @Column
+    private Short orderLine;
+
+    @ManyToOne
+    private Product product;
+
+    @ManyToOne
+    private Order customerOrder;
 
 }

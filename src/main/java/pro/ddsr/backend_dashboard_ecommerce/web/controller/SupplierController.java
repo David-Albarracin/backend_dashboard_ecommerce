@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Supplier;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/supplier")
+@RequestMapping("/suppliers")
 public class SupplierController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class SupplierController {
         return this.supplierService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Supplier> view(@PathVariable Long id){
         Optional<Supplier> optionalSupplier  = supplierService.findById(id);
@@ -57,7 +57,7 @@ public class SupplierController {
         return ResponseEntity.status(HttpStatus.CREATED).body(supplierService.save(supplier));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Supplier> update(@PathVariable Long id, @Valid @RequestBody Supplier supplier){
         Optional<Supplier> supplierOptional = this.supplierService.update(id, supplier);
@@ -67,7 +67,7 @@ public class SupplierController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Supplier> delete(@PathVariable Long id){
         //Supplier supplier = new Supplier();

@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OfficeAddress;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/office_address")
+@RequestMapping("/office_addresses")
 public class OfficeAddressController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class OfficeAddressController {
         return this.office_addressService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<OfficeAddress> view(@PathVariable Long id){
         Optional<OfficeAddress> optionalOfficeAddress  = office_addressService.findById(id);
@@ -57,7 +57,7 @@ public class OfficeAddressController {
         return ResponseEntity.status(HttpStatus.CREATED).body(office_addressService.save(office_address));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<OfficeAddress> update(@PathVariable Long id, @Valid @RequestBody OfficeAddress office_address){
         Optional<OfficeAddress> office_addressOptional = this.office_addressService.update(id, office_address);
@@ -67,7 +67,7 @@ public class OfficeAddressController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<OfficeAddress> delete(@PathVariable Long id){
         //OfficeAddress office_address = new OfficeAddress();

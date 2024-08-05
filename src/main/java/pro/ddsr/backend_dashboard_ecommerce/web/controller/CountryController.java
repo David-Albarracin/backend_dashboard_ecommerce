@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Country;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/country")
+@RequestMapping("/countries")
 public class CountryController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class CountryController {
         return this.countryService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Country> view(@PathVariable Long id){
         Optional<Country> optionalCountry  = countryService.findById(id);
@@ -57,7 +57,7 @@ public class CountryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(countryService.save(country));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Country> update(@PathVariable Long id, @Valid @RequestBody Country country){
         Optional<Country> countryOptional = this.countryService.update(id, country);
@@ -67,7 +67,7 @@ public class CountryController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Country> delete(@PathVariable Long id){
         //Country country = new Country();

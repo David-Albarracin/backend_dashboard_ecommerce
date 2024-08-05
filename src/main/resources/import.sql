@@ -1,0 +1,1 @@
+INSERT INTO ecommerce.product_gama (product_gama_id, image, description_html, description_text, name) VALUES(1, NULL, NULL, NULL, 'frutas');

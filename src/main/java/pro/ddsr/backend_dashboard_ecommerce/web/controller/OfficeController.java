@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Office;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/office")
+@RequestMapping("/offices")
 public class OfficeController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class OfficeController {
         return this.officeService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Office> view(@PathVariable Long id){
         Optional<Office> optionalOffice  = officeService.findById(id);
@@ -57,7 +57,7 @@ public class OfficeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(officeService.save(office));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Office> update(@PathVariable Long id, @Valid @RequestBody Office office){
         Optional<Office> officeOptional = this.officeService.update(id, office);
@@ -67,7 +67,7 @@ public class OfficeController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Office> delete(@PathVariable Long id){
         //Office office = new Office();

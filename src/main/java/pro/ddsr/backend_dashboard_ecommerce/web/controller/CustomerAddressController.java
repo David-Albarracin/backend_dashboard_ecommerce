@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.CustomerAddress;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/customer_address")
+@RequestMapping("/customer_addresses")
 public class CustomerAddressController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class CustomerAddressController {
         return this.customer_addressService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<CustomerAddress> view(@PathVariable Long id){
         Optional<CustomerAddress> optionalCustomerAddress  = customer_addressService.findById(id);
@@ -57,7 +57,7 @@ public class CustomerAddressController {
         return ResponseEntity.status(HttpStatus.CREATED).body(customer_addressService.save(customer_address));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<CustomerAddress> update(@PathVariable Long id, @Valid @RequestBody CustomerAddress customer_address){
         Optional<CustomerAddress> customer_addressOptional = this.customer_addressService.update(id, customer_address);
@@ -67,7 +67,7 @@ public class CustomerAddressController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<CustomerAddress> delete(@PathVariable Long id){
         //CustomerAddress customer_address = new CustomerAddress();

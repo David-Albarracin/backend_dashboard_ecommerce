@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomerController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class CustomerController {
         return this.customerService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Customer> view(@PathVariable Long id){
         Optional<Customer> optionalCustomer  = customerService.findById(id);
@@ -57,7 +57,7 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(customer));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Customer> update(@PathVariable Long id, @Valid @RequestBody Customer customer){
         Optional<Customer> customerOptional = this.customerService.update(id, customer);
@@ -67,7 +67,7 @@ public class CustomerController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Customer> delete(@PathVariable Long id){
         //Customer customer = new Customer();

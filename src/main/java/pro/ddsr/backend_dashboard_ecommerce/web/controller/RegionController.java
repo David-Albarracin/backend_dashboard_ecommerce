@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Region;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/region")
+@RequestMapping("/regions")
 public class RegionController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class RegionController {
         return this.regionService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Region> view(@PathVariable Long id){
         Optional<Region> optionalRegion  = regionService.findById(id);
@@ -57,7 +57,7 @@ public class RegionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(regionService.save(region));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Region> update(@PathVariable Long id, @Valid @RequestBody Region region){
         Optional<Region> regionOptional = this.regionService.update(id, region);
@@ -67,7 +67,7 @@ public class RegionController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Region> delete(@PathVariable Long id){
         //Region region = new Region();

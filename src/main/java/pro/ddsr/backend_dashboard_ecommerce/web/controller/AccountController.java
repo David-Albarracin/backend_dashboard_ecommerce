@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Account;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 public class AccountController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class AccountController {
         return this.accountService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Account> view(@PathVariable Long id){
         Optional<Account> optionalAccount  = accountService.findById(id);
@@ -57,7 +57,7 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.save(account));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Account> update(@PathVariable Long id, @Valid @RequestBody Account account){
         Optional<Account> accountOptional = this.accountService.update(id, account);
@@ -67,7 +67,7 @@ public class AccountController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Account> delete(@PathVariable Long id){
         //Account account = new Account();

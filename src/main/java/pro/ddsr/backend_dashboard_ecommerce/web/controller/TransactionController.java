@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Transaction;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/transaction")
+@RequestMapping("/transactions")
 public class TransactionController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class TransactionController {
         return this.transactionService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Transaction> view(@PathVariable Long id){
         Optional<Transaction> optionalTransaction  = transactionService.findById(id);
@@ -57,7 +57,7 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.save(transaction));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Transaction> update(@PathVariable Long id, @Valid @RequestBody Transaction transaction){
         Optional<Transaction> transactionOptional = this.transactionService.update(id, transaction);
@@ -67,7 +67,7 @@ public class TransactionController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Transaction> delete(@PathVariable Long id){
         //Transaction transaction = new Transaction();

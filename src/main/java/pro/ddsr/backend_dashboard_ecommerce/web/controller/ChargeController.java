@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Charge;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/charge")
+@RequestMapping("/charges")
 public class ChargeController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class ChargeController {
         return this.chargeService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Charge> view(@PathVariable Long id){
         Optional<Charge> optionalCharge  = chargeService.findById(id);
@@ -57,7 +57,7 @@ public class ChargeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(chargeService.save(charge));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Charge> update(@PathVariable Long id, @Valid @RequestBody Charge charge){
         Optional<Charge> chargeOptional = this.chargeService.update(id, charge);
@@ -67,7 +67,7 @@ public class ChargeController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Charge> delete(@PathVariable Long id){
         //Charge charge = new Charge();

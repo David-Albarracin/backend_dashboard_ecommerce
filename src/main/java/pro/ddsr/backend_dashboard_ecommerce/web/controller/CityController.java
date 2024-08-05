@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.City;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/city")
+@RequestMapping("/cities")
 public class CityController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class CityController {
         return this.cityService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<City> view(@PathVariable Long id){
         Optional<City> optionalCity  = cityService.findById(id);
@@ -57,7 +57,7 @@ public class CityController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cityService.save(city));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<City> update(@PathVariable Long id, @Valid @RequestBody City city){
         Optional<City> cityOptional = this.cityService.update(id, city);
@@ -67,7 +67,7 @@ public class CityController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<City> delete(@PathVariable Long id){
         //City city = new City();

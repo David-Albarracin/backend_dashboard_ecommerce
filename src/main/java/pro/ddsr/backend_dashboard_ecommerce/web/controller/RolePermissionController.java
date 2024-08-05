@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.RolePermission;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/role_permission")
+@RequestMapping("/role_permissions")
 public class RolePermissionController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class RolePermissionController {
         return this.role_permissionService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<RolePermission> view(@PathVariable Long id){
         Optional<RolePermission> optionalRolePermission  = role_permissionService.findById(id);
@@ -57,7 +57,7 @@ public class RolePermissionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(role_permissionService.save(role_permission));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<RolePermission> update(@PathVariable Long id, @Valid @RequestBody RolePermission role_permission){
         Optional<RolePermission> role_permissionOptional = this.role_permissionService.update(id, role_permission);
@@ -67,7 +67,7 @@ public class RolePermissionController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<RolePermission> delete(@PathVariable Long id){
         //RolePermission role_permission = new RolePermission();

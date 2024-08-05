@@ -52,7 +52,7 @@ public class SecurityConfig {
         UserDetails user = User.withUsername("pepe")
             .password("1234")
             .roles("ADMIN")
-            .authorities("READ")
+            .authorities("READ", "CREATE")
             .build();
         return new InMemoryUserDetailsManager(user);
     }

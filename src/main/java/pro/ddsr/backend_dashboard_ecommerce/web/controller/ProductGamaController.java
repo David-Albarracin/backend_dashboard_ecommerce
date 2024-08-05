@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.ProductGama;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/product_gama")
+@RequestMapping("/product_gamas")
 public class ProductGamaController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class ProductGamaController {
         return this.product_gamaService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<ProductGama> view(@PathVariable Long id){
         Optional<ProductGama> optionalProductGama  = product_gamaService.findById(id);
@@ -57,7 +57,7 @@ public class ProductGamaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product_gamaService.save(product_gama));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<ProductGama> update(@PathVariable Long id, @Valid @RequestBody ProductGama product_gama){
         Optional<ProductGama> product_gamaOptional = this.product_gamaService.update(id, product_gama);
@@ -67,7 +67,7 @@ public class ProductGamaController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<ProductGama> delete(@PathVariable Long id){
         //ProductGama product_gama = new ProductGama();

@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class OrderController {
         return this.orderService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Order> view(@PathVariable Long id){
         Optional<Order> optionalOrder  = orderService.findById(id);
@@ -57,7 +57,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(order));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Order> update(@PathVariable Long id, @Valid @RequestBody Order order){
         Optional<Order> orderOptional = this.orderService.update(id, order);
@@ -67,7 +67,7 @@ public class OrderController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Order> delete(@PathVariable Long id){
         //Order order = new Order();

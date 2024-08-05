@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OfficePhone;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/office_phone")
+@RequestMapping("/office_phones")
 public class OfficePhoneController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class OfficePhoneController {
         return this.office_phoneService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<OfficePhone> view(@PathVariable Long id){
         Optional<OfficePhone> optionalOfficePhone  = office_phoneService.findById(id);
@@ -57,7 +57,7 @@ public class OfficePhoneController {
         return ResponseEntity.status(HttpStatus.CREATED).body(office_phoneService.save(office_phone));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<OfficePhone> update(@PathVariable Long id, @Valid @RequestBody OfficePhone office_phone){
         Optional<OfficePhone> office_phoneOptional = this.office_phoneService.update(id, office_phone);
@@ -67,7 +67,7 @@ public class OfficePhoneController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<OfficePhone> delete(@PathVariable Long id){
         //OfficePhone office_phone = new OfficePhone();

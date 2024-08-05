@@ -38,7 +38,7 @@ public class OrderStatusController {
         return this.order_statusService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<OrderStatus> view(@PathVariable Long id){
         Optional<OrderStatus> optionalOrderStatus  = order_statusService.findById(id);
@@ -57,7 +57,7 @@ public class OrderStatusController {
         return ResponseEntity.status(HttpStatus.CREATED).body(order_statusService.save(order_status));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<OrderStatus> update(@PathVariable Long id, @Valid @RequestBody OrderStatus order_status){
         Optional<OrderStatus> order_statusOptional = this.order_statusService.update(id, order_status);
@@ -67,7 +67,7 @@ public class OrderStatusController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<OrderStatus> delete(@PathVariable Long id){
         //OrderStatus order_status = new OrderStatus();

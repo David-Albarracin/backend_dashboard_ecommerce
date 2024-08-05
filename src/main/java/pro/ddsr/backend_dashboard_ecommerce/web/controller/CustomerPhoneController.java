@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.CustomerPhone;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/customer_phone")
+@RequestMapping("/customer_phones")
 public class CustomerPhoneController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class CustomerPhoneController {
         return this.customer_phoneService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<CustomerPhone> view(@PathVariable Long id){
         Optional<CustomerPhone> optionalCustomerPhone  = customer_phoneService.findById(id);
@@ -57,7 +57,7 @@ public class CustomerPhoneController {
         return ResponseEntity.status(HttpStatus.CREATED).body(customer_phoneService.save(customer_phone));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<CustomerPhone> update(@PathVariable Long id, @Valid @RequestBody CustomerPhone customer_phone){
         Optional<CustomerPhone> customer_phoneOptional = this.customer_phoneService.update(id, customer_phone);
@@ -67,7 +67,7 @@ public class CustomerPhoneController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<CustomerPhone> delete(@PathVariable Long id){
         //CustomerPhone customer_phone = new CustomerPhone();

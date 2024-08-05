@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Role;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/roles")
 public class RoleController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class RoleController {
         return this.roleService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Role> view(@PathVariable Long id){
         Optional<Role> optionalRole  = roleService.findById(id);
@@ -57,7 +57,7 @@ public class RoleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(roleService.save(role));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Role> update(@PathVariable Long id, @Valid @RequestBody Role role){
         Optional<Role> roleOptional = this.roleService.update(id, role);
@@ -67,7 +67,7 @@ public class RoleController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Role> delete(@PathVariable Long id){
         //Role role = new Role();

@@ -23,6 +23,8 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long roleId;
+
+    String name;
 
 }

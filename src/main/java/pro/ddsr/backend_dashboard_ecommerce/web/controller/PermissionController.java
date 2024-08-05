@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Permission;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/permission")
+@RequestMapping("/permissions")
 public class PermissionController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class PermissionController {
         return this.permissionService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Permission> view(@PathVariable Long id){
         Optional<Permission> optionalPermission  = permissionService.findById(id);
@@ -57,7 +57,7 @@ public class PermissionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(permissionService.save(permission));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Permission> update(@PathVariable Long id, @Valid @RequestBody Permission permission){
         Optional<Permission> permissionOptional = this.permissionService.update(id, permission);
@@ -67,7 +67,7 @@ public class PermissionController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Permission> delete(@PathVariable Long id){
         //Permission permission = new Permission();

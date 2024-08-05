@@ -26,7 +26,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.PayMethod;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/pay_method")
+@RequestMapping("/pay_methods")
 public class PayMethodController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class PayMethodController {
         return this.pay_methodService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<PayMethod> view(@PathVariable Long id){
         Optional<PayMethod> optionalPayMethod  = pay_methodService.findById(id);
@@ -57,7 +57,7 @@ public class PayMethodController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pay_methodService.save(pay_method));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<PayMethod> update(@PathVariable Long id, @Valid @RequestBody PayMethod pay_method){
         Optional<PayMethod> pay_methodOptional = this.pay_methodService.update(id, pay_method);
@@ -67,7 +67,7 @@ public class PayMethodController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<PayMethod> delete(@PathVariable Long id){
         //PayMethod pay_method = new PayMethod();

@@ -38,7 +38,7 @@ public class EmployeeController {
         return this.employeeService.findAll();
     }
 
-    @GetMapping("/<built-in function id>")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ')")
     public ResponseEntity<Employee> view(@PathVariable Long id){
         Optional<Employee> optionalEmployee  = employeeService.findById(id);
@@ -57,7 +57,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.save(employee));
     }
 
-    @PutMapping("/<built-in function id>")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE')")
     public ResponseEntity<Employee> update(@PathVariable Long id, @Valid @RequestBody Employee employee){
         Optional<Employee> employeeOptional = this.employeeService.update(id, employee);
@@ -67,7 +67,7 @@ public class EmployeeController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/<built-in function id>")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE')")
     public ResponseEntity<Employee> delete(@PathVariable Long id){
         //Employee employee = new Employee();

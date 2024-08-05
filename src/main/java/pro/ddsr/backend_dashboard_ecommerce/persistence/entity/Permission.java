@@ -23,6 +23,8 @@ public class Permission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long permissionId;
+
+    String name;
 
 }
