@@ -10,7 +10,32 @@ main_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../src/main
 
 # Definir los arrays de módulos
 modules = [
-    "account"
+    "account",
+    "role",
+    "permission",
+    "role_permission",
+    "account_role",
+    "country",
+    "region",
+    "city",
+    "customer",
+    "customer_address",
+    "customer_phone",
+    "order_status",
+    "order",
+    "supplier",
+    "supplier_phone",
+    "supplier_address",
+    "office",
+    "office_phone",
+    "office_address",
+    "charge",
+    "employee",
+    "product_gama",
+    "product",
+    "order_detail",
+    "pay_method",
+    "transaction"
 ]
 
 # Función para capitalizar la primera letra de una cadena y transformar texto con guiones bajos
