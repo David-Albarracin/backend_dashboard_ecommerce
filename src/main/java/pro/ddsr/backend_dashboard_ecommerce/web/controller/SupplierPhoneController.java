@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class SupplierPhoneController {
     private SupplierPhoneService supplier_phoneService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<SupplierPhone> listSupplierPhone(){
         return this.supplier_phoneService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SupplierPhone> view(@PathVariable Long id){
         Optional<SupplierPhone> optionalSupplierPhone  = supplier_phoneService.findById(id);
         if (optionalSupplierPhone.isPresent()){
@@ -49,7 +48,7 @@ public class SupplierPhoneController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody SupplierPhone supplier_phone, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class SupplierPhoneController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SupplierPhone> update(@PathVariable Long id, @Valid @RequestBody SupplierPhone supplier_phone){
         Optional<SupplierPhone> supplier_phoneOptional = this.supplier_phoneService.update(id, supplier_phone);
         if (supplier_phoneOptional.isPresent()){
@@ -68,7 +67,7 @@ public class SupplierPhoneController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SupplierPhone> delete(@PathVariable Long id){
         //SupplierPhone supplier_phone = new SupplierPhone();
         //supplier_phone.setId(id);

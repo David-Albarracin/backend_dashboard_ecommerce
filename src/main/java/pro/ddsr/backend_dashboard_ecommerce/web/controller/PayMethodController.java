@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class PayMethodController {
     private PayMethodService pay_methodService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public List<PayMethod> listPayMethod(){
         return this.pay_methodService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PayMethod> view(@PathVariable Long id){
         Optional<PayMethod> optionalPayMethod  = pay_methodService.findById(id);
         if (optionalPayMethod.isPresent()){
@@ -49,7 +48,7 @@ public class PayMethodController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody PayMethod pay_method, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class PayMethodController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PayMethod> update(@PathVariable Long id, @Valid @RequestBody PayMethod pay_method){
         Optional<PayMethod> pay_methodOptional = this.pay_methodService.update(id, pay_method);
         if (pay_methodOptional.isPresent()){
@@ -68,7 +67,7 @@ public class PayMethodController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PayMethod> delete(@PathVariable Long id){
         //PayMethod pay_method = new PayMethod();
         //pay_method.setId(id);

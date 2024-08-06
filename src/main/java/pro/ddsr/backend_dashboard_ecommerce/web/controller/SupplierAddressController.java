@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class SupplierAddressController {
     private SupplierAddressService supplier_addressService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<SupplierAddress> listSupplierAddress(){
         return this.supplier_addressService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SupplierAddress> view(@PathVariable Long id){
         Optional<SupplierAddress> optionalSupplierAddress  = supplier_addressService.findById(id);
         if (optionalSupplierAddress.isPresent()){
@@ -49,7 +48,7 @@ public class SupplierAddressController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody SupplierAddress supplier_address, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class SupplierAddressController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SupplierAddress> update(@PathVariable Long id, @Valid @RequestBody SupplierAddress supplier_address){
         Optional<SupplierAddress> supplier_addressOptional = this.supplier_addressService.update(id, supplier_address);
         if (supplier_addressOptional.isPresent()){
@@ -68,7 +67,7 @@ public class SupplierAddressController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SupplierAddress> delete(@PathVariable Long id){
         //SupplierAddress supplier_address = new SupplierAddress();
         //supplier_address.setId(id);

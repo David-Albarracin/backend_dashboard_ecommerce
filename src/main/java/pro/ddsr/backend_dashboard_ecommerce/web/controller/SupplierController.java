@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class SupplierController {
     private SupplierService supplierService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<Supplier> listSupplier(){
         return this.supplierService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Supplier> view(@PathVariable Long id){
         Optional<Supplier> optionalSupplier  = supplierService.findById(id);
         if (optionalSupplier.isPresent()){
@@ -49,7 +48,7 @@ public class SupplierController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Supplier supplier, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Supplier> update(@PathVariable Long id, @Valid @RequestBody Supplier supplier){
         Optional<Supplier> supplierOptional = this.supplierService.update(id, supplier);
         if (supplierOptional.isPresent()){
@@ -68,7 +67,7 @@ public class SupplierController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Supplier> delete(@PathVariable Long id){
         //Supplier supplier = new Supplier();
         //supplier.setId(id);

@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class PermissionController {
     private PermissionService permissionService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public List<Permission> listPermission(){
         return this.permissionService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Permission> view(@PathVariable Long id){
         Optional<Permission> optionalPermission  = permissionService.findById(id);
         if (optionalPermission.isPresent()){
@@ -49,7 +48,7 @@ public class PermissionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Permission permission, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class PermissionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Permission> update(@PathVariable Long id, @Valid @RequestBody Permission permission){
         Optional<Permission> permissionOptional = this.permissionService.update(id, permission);
         if (permissionOptional.isPresent()){
@@ -68,7 +67,7 @@ public class PermissionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Permission> delete(@PathVariable Long id){
         //Permission permission = new Permission();
         //permission.setId(id);

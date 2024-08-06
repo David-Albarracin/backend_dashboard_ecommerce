@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class CountryController {
     private CountryService countryService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public List<Country> listCountry(){
         return this.countryService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Country> view(@PathVariable Long id){
         Optional<Country> optionalCountry  = countryService.findById(id);
         if (optionalCountry.isPresent()){
@@ -49,7 +48,7 @@ public class CountryController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Country country, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class CountryController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Country> update(@PathVariable Long id, @Valid @RequestBody Country country){
         Optional<Country> countryOptional = this.countryService.update(id, country);
         if (countryOptional.isPresent()){
@@ -68,7 +67,7 @@ public class CountryController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    // @PreAuthorize("hasRole('ADMIN')"// )
     public ResponseEntity<Country> delete(@PathVariable Long id){
         //Country country = new Country();
         //country.setId(id);

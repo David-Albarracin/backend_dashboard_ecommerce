@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class OrderDetailController {
     private OrderDetailService order_detailService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public List<OrderDetail> listOrderDetail(){
         return this.order_detailService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OrderDetail> view(@PathVariable Long id){
         Optional<OrderDetail> optionalOrderDetail  = order_detailService.findById(id);
         if (optionalOrderDetail.isPresent()){
@@ -49,7 +48,7 @@ public class OrderDetailController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody OrderDetail order_detail, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class OrderDetailController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OrderDetail> update(@PathVariable Long id, @Valid @RequestBody OrderDetail order_detail){
         Optional<OrderDetail> order_detailOptional = this.order_detailService.update(id, order_detail);
         if (order_detailOptional.isPresent()){
@@ -68,7 +67,7 @@ public class OrderDetailController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OrderDetail> delete(@PathVariable Long id){
         //OrderDetail order_detail = new OrderDetail();
         //order_detail.setId(id);

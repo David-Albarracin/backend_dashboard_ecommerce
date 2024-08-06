@@ -4,16 +4,20 @@ package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.enumObj.Audit;
 
 @Setter
 @Getter
@@ -37,10 +41,20 @@ public class Supplier {
     @Column(length = 100)
     private String email;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private LocalDateTime updatedAt;
+    @Embedded
+    private final Audit audit = new Audit();
+
+        
+    @PrePersist
+    public void prePersist() {
+        audit.prePersistAudit();
+    }
+
+    
+    @PreUpdate
+    public void preUpdate() {
+        audit.preUpdateAudit();
+    }
 
 }

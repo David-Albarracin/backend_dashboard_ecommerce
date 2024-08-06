@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<Role> listRole(){
         return this.roleService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Role> view(@PathVariable Long id){
         Optional<Role> optionalRole  = roleService.findById(id);
         if (optionalRole.isPresent()){
@@ -49,7 +48,7 @@ public class RoleController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Role role, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Role> update(@PathVariable Long id, @Valid @RequestBody Role role){
         Optional<Role> roleOptional = this.roleService.update(id, role);
         if (roleOptional.isPresent()){
@@ -68,7 +67,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Role> delete(@PathVariable Long id){
         //Role role = new Role();
         //role.setId(id);

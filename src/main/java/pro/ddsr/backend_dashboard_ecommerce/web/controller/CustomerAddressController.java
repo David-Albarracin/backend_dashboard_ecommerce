@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class CustomerAddressController {
     private CustomerAddressService customer_addressService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public List<CustomerAddress> listCustomerAddress(){
         return this.customer_addressService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomerAddress> view(@PathVariable Long id){
         Optional<CustomerAddress> optionalCustomerAddress  = customer_addressService.findById(id);
         if (optionalCustomerAddress.isPresent()){
@@ -49,7 +48,7 @@ public class CustomerAddressController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody CustomerAddress customer_address, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class CustomerAddressController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomerAddress> update(@PathVariable Long id, @Valid @RequestBody CustomerAddress customer_address){
         Optional<CustomerAddress> customer_addressOptional = this.customer_addressService.update(id, customer_address);
         if (customer_addressOptional.isPresent()){
@@ -68,7 +67,7 @@ public class CustomerAddressController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomerAddress> delete(@PathVariable Long id){
         //CustomerAddress customer_address = new CustomerAddress();
         //customer_address.setId(id);

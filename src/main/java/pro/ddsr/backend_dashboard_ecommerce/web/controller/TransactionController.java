@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<Transaction> listTransaction(){
         return this.transactionService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Transaction> view(@PathVariable Long id){
         Optional<Transaction> optionalTransaction  = transactionService.findById(id);
         if (optionalTransaction.isPresent()){
@@ -49,7 +48,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Transaction transaction, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Transaction> update(@PathVariable Long id, @Valid @RequestBody Transaction transaction){
         Optional<Transaction> transactionOptional = this.transactionService.update(id, transaction);
         if (transactionOptional.isPresent()){
@@ -68,7 +67,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Transaction> delete(@PathVariable Long id){
         //Transaction transaction = new Transaction();
         //transaction.setId(id);

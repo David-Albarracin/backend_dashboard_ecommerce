@@ -36,6 +36,10 @@ public class ProductGamaService {
         return this.product_gamaRepository.findById(id);
     }
 
+    /* public Long findId(String name) {
+        return 
+    } */
+
     public ProductGama save(ProductGama ProductGama) {
         return this.product_gamaRepository.save(ProductGama);
     }

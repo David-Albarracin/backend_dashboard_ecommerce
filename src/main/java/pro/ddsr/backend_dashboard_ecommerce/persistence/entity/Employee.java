@@ -1,22 +1,26 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.enumObj.Audit;
 
 @Setter
 @Getter
@@ -30,9 +34,6 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long employeeId;
-
-    @Column(length = 255, unique = true, nullable = false)
-    private String accountId;
 
     @Column(length = 255, nullable = false)
     private String firstName;
@@ -56,23 +57,35 @@ public class Employee {
     @Column(length = 255, nullable = false)
     private String phoneNumber;
 
-    @Column(length = 255, nullable = false)
-    private String officeId;
+    @ManyToOne
+    @JoinColumn( name = "office_id")
+    private Office office;
 
     @Column(nullable = false)
     private Integer extension;
 
     @ManyToOne
+    @JoinColumn( name = "charge_id")
     private Charge charge;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
     @ManyToOne
+    @JoinColumn( name = "boss_id")
     private Employee boss;
+
+    @Embedded
+    private final Audit audit = new Audit();
+
+        
+    @PrePersist
+    public void prePersist() {
+        audit.prePersistAudit();
+    }
+
+    
+    @PreUpdate
+    public void preUpdate() {
+        audit.preUpdateAudit();
+    }
 
     public enum DocumentType {
         CEDULA_CIUDADANIA,

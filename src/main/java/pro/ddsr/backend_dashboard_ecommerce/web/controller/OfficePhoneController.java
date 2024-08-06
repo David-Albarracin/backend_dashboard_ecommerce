@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class OfficePhoneController {
     private OfficePhoneService office_phoneService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public List<OfficePhone> listOfficePhone(){
         return this.office_phoneService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OfficePhone> view(@PathVariable Long id){
         Optional<OfficePhone> optionalOfficePhone  = office_phoneService.findById(id);
         if (optionalOfficePhone.isPresent()){
@@ -49,7 +48,7 @@ public class OfficePhoneController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody OfficePhone office_phone, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class OfficePhoneController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OfficePhone> update(@PathVariable Long id, @Valid @RequestBody OfficePhone office_phone){
         Optional<OfficePhone> office_phoneOptional = this.office_phoneService.update(id, office_phone);
         if (office_phoneOptional.isPresent()){
@@ -68,7 +67,7 @@ public class OfficePhoneController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OfficePhone> delete(@PathVariable Long id){
         //OfficePhone office_phone = new OfficePhone();
         //office_phone.setId(id);

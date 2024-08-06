@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.ProductDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.ProductService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Product;
 
@@ -33,13 +34,13 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public List<Product> listProduct(){
         return this.productService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> view(@PathVariable Long id){
         Optional<Product> optionalProduct  = productService.findById(id);
         if (optionalProduct.isPresent()){
@@ -48,18 +49,29 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Product>> viewByGama(@RequestParam String name){
+        List<Product> listProduct  = productService.findByGama(name);
+        if (listProduct.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listProduct);
+    }
+
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
         }
+        System.out.println(product.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
-    public ResponseEntity<Product> update(@PathVariable Long id, @Valid @RequestBody Product product){
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Product> update(@PathVariable Long id, @Valid @RequestBody ProductDto product){
         Optional<Product> productOptional = this.productService.update(id, product);
         if (productOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(productOptional.orElseThrow());
@@ -68,7 +80,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> delete(@PathVariable Long id){
         //Product product = new Product();
         //product.setId(id);

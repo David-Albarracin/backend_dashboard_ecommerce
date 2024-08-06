@@ -16,7 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // CU7
 
-    @Query("SELECT p FROM Product p WHERE p.productGama.name = ?1")
+    @Query("SELECT p FROM Product p INNER JOIN p.productGama pg WHERE pg.name =?1")
     List<Product> findByGama(String gamaName);
     
     // @Query("SELECT * FROM product p\n" + //

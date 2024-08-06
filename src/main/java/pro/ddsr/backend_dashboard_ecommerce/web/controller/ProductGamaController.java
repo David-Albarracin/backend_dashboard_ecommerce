@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +32,13 @@ public class ProductGamaController {
     private ProductGamaService product_gamaService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<ProductGama> listProductGama(){
         return this.product_gamaService.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('READ')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductGama> view(@PathVariable Long id){
         Optional<ProductGama> optionalProductGama  = product_gamaService.findById(id);
         if (optionalProductGama.isPresent()){
@@ -49,7 +48,7 @@ public class ProductGamaController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody ProductGama product_gama, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
@@ -58,7 +57,7 @@ public class ProductGamaController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductGama> update(@PathVariable Long id, @Valid @RequestBody ProductGama product_gama){
         Optional<ProductGama> product_gamaOptional = this.product_gamaService.update(id, product_gama);
         if (product_gamaOptional.isPresent()){
@@ -68,7 +67,7 @@ public class ProductGamaController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductGama> delete(@PathVariable Long id){
         //ProductGama product_gama = new ProductGama();
         //product_gama.setId(id);

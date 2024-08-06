@@ -10,8 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.AccountRepository;
+import pro.ddsr.backend_dashboard_ecommerce.domain.repository.PermissionRepository;
+import pro.ddsr.backend_dashboard_ecommerce.domain.repository.RoleRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Account;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Role;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Permission;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.enumObj.RoleEnum;
 
 @SpringBootApplication
@@ -23,6 +26,12 @@ public class BackendDashboardEcommerceApplication {
 	@Autowired 
 	AccountRepository accountRepository;
 
+	@Autowired 
+	PermissionRepository permissionRepository;
+
+	@Autowired 
+	RoleRepository roleRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(BackendDashboardEcommerceApplication.class, args);
 	}
@@ -33,14 +42,33 @@ public class BackendDashboardEcommerceApplication {
 
 		return args -> {
 
-			Role role = new Role();
-			role.setName(
-				RoleEnum.ADMIN
-			);	
+			// Crear permisos
+			Permission readPermission = new Permission();
+			readPermission.setName("READ");
+
+			Permission writePermission = new Permission();
+			writePermission.setName("WRITE");
+
+			// Guardar permisos en la base de datos (si no están ya guardados)
+			permissionRepository.save(readPermission);
+			permissionRepository.save(writePermission);
+
+			// Crear rol y agregar permisos
+			Role adminRole = new Role();
+			adminRole.setName(RoleEnum.ADMIN);
+			adminRole.setPermissions(Set.of(readPermission, writePermission));
+
+			// Guardar rol en la base de datos
+			//roleRepository.save(adminRole);
+
+			// Role role = new Role();
+			// role.setName(
+			// 	RoleEnum.ADMIN
+			// );	
 			Account testAccount = new Account();
 			testAccount.setUsername("edgar");
 			testAccount.setPassword(encoder.encode("1234"));
-			testAccount.setRoles(Set.of(role));
+			testAccount.setRoles(Set.of(adminRole));
 			// Obtener el conjunto de roles
 			Set<Role> roles = testAccount.getRoles();
 

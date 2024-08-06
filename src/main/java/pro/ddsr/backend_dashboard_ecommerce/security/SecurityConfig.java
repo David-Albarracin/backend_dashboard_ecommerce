@@ -58,8 +58,12 @@ public class SecurityConfig {
             .sessionManagement( sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(http -> {
                 // publico
-                http.requestMatchers(HttpMethod.POST, "/login").permitAll(); /*.hasAnyRole("ADMIN", "USER")*/
+                http.requestMatchers(HttpMethod.POST, "/login").permitAll();/*.hasAnyRole("ADMIN", "USER")*/
                 http.requestMatchers(HttpMethod.POST, "/create-user").permitAll();
+                http.requestMatchers(HttpMethod.GET, "/**").hasAnyRole("USER", "ADMIN");
+                 http.requestMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN");
+                  http.requestMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN");
+                   http.requestMatchers(HttpMethod.DELETE, "/**").hasAnyRole("ADMIN");
                 // autenticado
                  
                 http.anyRequest().authenticated();
