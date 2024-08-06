@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.TransactionService;
@@ -45,6 +46,17 @@ public class TransactionController {
             return ResponseEntity.ok(optionalTransaction.orElseThrow());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // CU14
+    @GetMapping("/findTransactionByPayMethod")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Transaction>> viewByPayMethod(@RequestParam String name){
+        List<Transaction> listTransaction  = transactionService.findByPayMethod(name);
+        if (listTransaction.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listTransaction);
     }
 
     @PostMapping

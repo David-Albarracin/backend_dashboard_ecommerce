@@ -49,10 +49,22 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping
+    // CU7
+    @GetMapping("/findProductByGama")
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Product>> viewByGama(@RequestParam String name){
         List<Product> listProduct  = productService.findByGama(name);
+        if (listProduct.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listProduct);
+    }
+
+    // CU12
+    @GetMapping("/findProductByStock")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Product>> viewByStock(@RequestParam Byte stock){
+        List<Product> listProduct  = productService.findByStock(stock);
         if (listProduct.isEmpty()){
             return ResponseEntity.noContent().build();
         }

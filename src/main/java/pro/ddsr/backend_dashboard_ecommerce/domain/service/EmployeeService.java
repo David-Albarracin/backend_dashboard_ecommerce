@@ -36,6 +36,10 @@ public class EmployeeService {
         return this.employeeRepository.findById(id);
     }
 
+    public List<Employee> findByOffice(Long id) {
+        return this.employeeRepository.findByOffice(id);
+    }
+
     public Employee save(Employee Employee) {
         return this.employeeRepository.save(Employee);
     }

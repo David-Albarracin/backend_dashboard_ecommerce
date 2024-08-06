@@ -36,6 +36,10 @@ public class OrderService {
         return this.orderRepository.findById(id);
     }
 
+    public List<Order> findByStatus(String nameStatus) {
+        return this.orderRepository.findByStatus(nameStatus);
+    }
+
     public Order save(Order Order) {
         return this.orderRepository.save(Order);
     }

@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.EmployeeService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Employee;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -45,6 +45,17 @@ public class EmployeeController {
             return ResponseEntity.ok(optionalEmployee.orElseThrow());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // CU11
+    @GetMapping("/findEmployeeByOffice")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Employee>> viewByOffice(@RequestParam Long id){
+        List<Employee> listEmployee  = employeeService.findByOffice(id);
+        if (listEmployee.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listEmployee);
     }
 
     @PostMapping

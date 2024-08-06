@@ -12,7 +12,6 @@ import pro.ddsr.backend_dashboard_ecommerce.domain.repository.ProductRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.ProductDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.ProductGamaRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Product;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.ProductGama;
 
 @Service
 public class ProductService {
@@ -44,6 +43,10 @@ public class ProductService {
 
     public List<Product> findByGama(String gamaName) {
         return this.productRepository.findByGama(gamaName);
+    }
+
+    public List<Product> findByStock(Byte stock) {
+        return this.productRepository.findByStock(stock);
     }
 
     public Product save(Product product) {

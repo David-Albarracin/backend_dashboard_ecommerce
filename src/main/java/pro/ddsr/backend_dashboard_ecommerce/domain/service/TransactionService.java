@@ -36,6 +36,10 @@ public class TransactionService {
         return this.transactionRepository.findById(id);
     }
 
+    public List<Transaction> findByPayMethod(String payMethodName) {
+        return this.transactionRepository.findByPayMethod(payMethodName);
+    }
+
     public Transaction save(Transaction Transaction) {
         return this.transactionRepository.save(Transaction);
     }

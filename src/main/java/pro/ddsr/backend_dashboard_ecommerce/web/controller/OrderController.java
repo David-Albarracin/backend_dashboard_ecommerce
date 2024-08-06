@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.OrderService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -45,6 +45,17 @@ public class OrderController {
             return ResponseEntity.ok(optionalOrder.orElseThrow());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // CU9
+    @GetMapping("/findOrderByStatus")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Order>> viewByStatus(@RequestParam String name){
+        List<Order> listOrder  = orderService.findByStatus(name);
+        if (listOrder.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listOrder);
     }
 
     @PostMapping
