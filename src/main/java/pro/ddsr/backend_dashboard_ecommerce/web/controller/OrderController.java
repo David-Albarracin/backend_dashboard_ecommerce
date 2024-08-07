@@ -34,7 +34,9 @@ public class OrderController {
     @GetMapping
     // @PreAuthorize("hasRole('ADMIN')")
     public List<Order> listOrder(){
-        return this.orderService.findAll();
+        List<Order> orders = this.orderService.findAll();
+        orders.forEach(order -> System.out.println(order)); // Imprime cada pedido en la consola
+        return orders;
     }
 
     @GetMapping("/{id}")

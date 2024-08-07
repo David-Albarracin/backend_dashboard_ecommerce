@@ -30,6 +30,7 @@ public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="supplier_id")
     Long supplierId;
 
       @Column(length = 100, nullable = false)

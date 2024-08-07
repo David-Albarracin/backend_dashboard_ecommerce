@@ -12,6 +12,7 @@ import pro.ddsr.backend_dashboard_ecommerce.domain.repository.ProductRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.ProductDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.ProductGamaRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Product;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.ProductGama;
 
 @Service
 public class ProductService {
@@ -49,28 +50,15 @@ public class ProductService {
         return this.productRepository.findByStock(stock);
     }
 
-    public Product save(Product product) {
-        // ProductGama productGama = productGamaRepository.findById(product.getProductGama().getProductGamaId())
-        //         .orElseThrow(() -> new RuntimeException("ProductGama not found"));
-
-        // product.setProductGama(productGama);
-
-        return this.productRepository.save(product);
+    public Product save(ProductDto product) {
+        Product productItem = product.toProduct(productGamaRepository.findById(product.getProductGama()).get()); 
+        return this.productRepository.save(productItem);
     }
 
     public Optional<Product> update(Long id, ProductDto product) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
         if (optionalProduct.isPresent()) {
-            Product productItem = optionalProduct.orElseThrow();
-            productItem.setProductId(id);
-            productItem.setCode(product.getCode());
-            productItem.setName(product.getName());
-            productItem.setDescription(product.getDescription());
-            productItem.setStock(product.getStock());
-            productItem.setPriceSale(product.getPriceSale());
-            productItem.setPriceBuy(product.getPriceBuy());
-            productItem.setProductGama(productGamaRepository.findById(product.getProductGama()).get());
-                    
+            Product productItem = product.toProduct(productGamaRepository.findById(product.getProductGama()).get()); 
             return Optional.of(this.productRepository.save(productItem));
         }
         return optionalProduct;

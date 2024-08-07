@@ -73,11 +73,10 @@ public class ProductController {
 
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody ProductDto product, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        System.out.println(product.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 

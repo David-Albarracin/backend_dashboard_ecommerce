@@ -24,18 +24,19 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="transaction")
+@Table(name="transactions")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "transaction_id", nullable = false)
     Long transactionId;
 
 
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal amount;
 
-    @Column(nullable = false)
+    @Column(name= "transaction_date", nullable = false)
     private LocalDateTime transactionDate;
 
     @ManyToOne

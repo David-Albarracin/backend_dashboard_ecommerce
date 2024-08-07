@@ -4,6 +4,8 @@ package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,6 +22,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
@@ -28,10 +31,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name="orders")
+@ToString
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     Long orderId;
 
     @Column
@@ -56,9 +61,11 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @JsonBackReference
     private Customer customer;
 
     @OneToMany(mappedBy = "customerOrder")
+    @JsonBackReference
     List<OrderDetail> orderdetails;
 
     public enum OrderType {

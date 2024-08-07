@@ -34,6 +34,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "customer_id",length = 255, nullable = false)
     Long customerId;
 
     @Column(length = 255, nullable = false)
