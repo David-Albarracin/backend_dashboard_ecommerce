@@ -51,4 +51,8 @@ public class Product {
     @JoinColumn(name="product_gama_id")
     private ProductGama productGama;
 
+    @ManyToOne
+    @JoinColumn(name="supplier_id")
+    private Supplier Supplier;
+
 }

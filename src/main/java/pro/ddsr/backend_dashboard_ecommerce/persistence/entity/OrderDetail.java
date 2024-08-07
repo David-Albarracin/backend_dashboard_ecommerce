@@ -41,7 +41,7 @@ public class OrderDetail {
     private Short orderLine;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne

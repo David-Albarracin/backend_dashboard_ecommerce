@@ -24,6 +24,7 @@ public class PayMethod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pay_method_id")
     Long payMethodId;
 
     @Column(length = 50, nullable = false)
