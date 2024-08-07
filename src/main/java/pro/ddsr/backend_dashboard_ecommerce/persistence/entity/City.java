@@ -1,12 +1,15 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +36,7 @@ public class City {
     @JoinColumn( name = "region_id")
     Region region;
 
-    
+    @OneToMany(mappedBy = "city")
+    private Set<CustomerAddress> addresses;
 
 }

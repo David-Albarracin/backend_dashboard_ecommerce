@@ -40,6 +40,10 @@ public class CustomerService {
         return this.customerRepository.findCustomersByCity(name);
     }
 
+    public List<Customer> findCustomersWithPendingOrders() {
+        return customerRepository.findCustomersWithPendingOrders();
+    }
+
     public Customer save(Customer Customer) {
         return this.customerRepository.save(Customer);
     }

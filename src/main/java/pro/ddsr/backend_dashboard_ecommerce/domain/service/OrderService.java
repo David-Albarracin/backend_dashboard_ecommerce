@@ -1,6 +1,7 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.domain.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +39,10 @@ public class OrderService {
 
     public List<Order> findByStatus(String nameStatus) {
         return this.orderRepository.findByStatus(nameStatus);
+    }
+
+    public List<Order> getOrdersInDateRange(LocalDate startDate, LocalDate endDate) {
+        return orderRepository.findOrdersInDateRange(startDate, endDate);
     }
 
     public Order save(Order Order) {

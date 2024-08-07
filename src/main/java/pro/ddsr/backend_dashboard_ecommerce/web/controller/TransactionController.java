@@ -48,6 +48,17 @@ public class TransactionController {
         return ResponseEntity.notFound().build();
     }
 
+    // CU10
+    @GetMapping("/findTransactionByCustomer")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Transaction>> viewByCustomer(@RequestParam Long id){
+        List<Transaction> listTransaction  = transactionService.findByCustomer(id);
+        if (listTransaction.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listTransaction);
+    }
+
     // CU14
     @GetMapping("/findTransactionByPayMethod")
     // @PreAuthorize("hasRole('ADMIN')")

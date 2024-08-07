@@ -64,6 +64,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private Set<CustomerAddress> addresses;
 
+    @OneToMany(mappedBy = "customer")
+    private Set<Order> orders;
+
     @Embedded
     private final Audit audit = new Audit();
 

@@ -1,12 +1,14 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.web.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -54,6 +56,19 @@ public class OrderController {
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Order>> viewByStatus(@RequestParam String name){
         List<Order> listOrder  = orderService.findByStatus(name);
+        if (listOrder.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listOrder);
+    }
+
+    // CU13
+    @GetMapping("/findOrderByDateRange")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Order>> viewByDateRange(
+        @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+        @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
+        List<Order> listOrder  = orderService.getOrdersInDateRange(startDate, endDate);
         if (listOrder.isEmpty()){
             return ResponseEntity.noContent().build();
         }

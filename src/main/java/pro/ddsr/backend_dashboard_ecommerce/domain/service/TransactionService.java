@@ -40,6 +40,10 @@ public class TransactionService {
         return this.transactionRepository.findByPayMethod(payMethodName);
     }
 
+    public List<Transaction> findByCustomer(Long id) {
+        return this.transactionRepository.findByCustomer(id);
+    }
+
     public Transaction save(Transaction Transaction) {
         return this.transactionRepository.save(Transaction);
     }

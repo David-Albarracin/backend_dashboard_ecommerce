@@ -40,7 +40,7 @@ public class CustomerController {
     @GetMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Customer> view(@PathVariable Long id){
-        Optional<Customer> optionalCustomer  = customerService.findById(id);
+        Optional<Customer> optionalCustomer = customerService.findById(id);
         if (optionalCustomer.isPresent()){
             return ResponseEntity.ok(optionalCustomer.orElseThrow());
         }
@@ -51,7 +51,18 @@ public class CustomerController {
     @GetMapping("/findCustomersByCity")
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Customer>> viewByCity(@RequestParam String name){
-        List<Customer> listCustomer  = customerService.findCustomersByCity(name);
+        List<Customer> listCustomer = customerService.findCustomersByCity(name);
+        if (listCustomer.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listCustomer);
+    }
+
+    // CU15
+    @GetMapping("/findCustomersWithPendingOrders")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Customer>> viewByPendingOrders(){
+        List<Customer> listCustomer = customerService.findCustomersWithPendingOrders();
         if (listCustomer.isEmpty()){
             return ResponseEntity.noContent().build();
         }

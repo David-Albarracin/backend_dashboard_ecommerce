@@ -40,6 +40,10 @@ public class EmployeeService {
         return this.employeeRepository.findByOffice(id);
     }
 
+    public List<Employee> findAllEmployeesWithOrders() {
+        return employeeRepository.findAllEmployeesWithOrders();
+    }
+
     public Employee save(Employee Employee) {
         return this.employeeRepository.save(Employee);
     }
