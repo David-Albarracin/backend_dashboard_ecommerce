@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OfficeRepository extends JpaRepository<Office, Long> {
     // Define repository methods here
-    // CU6
+    // CU6 (CRUD)
 }

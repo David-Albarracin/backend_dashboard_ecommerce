@@ -36,6 +36,10 @@ public class CustomerService {
         return this.customerRepository.findById(id);
     }
 
+    public List<Customer> findCustomersByCity(String name) {
+        return this.customerRepository.findCustomersByCity(name);
+    }
+
     public Customer save(Customer Customer) {
         return this.customerRepository.save(Customer);
     }

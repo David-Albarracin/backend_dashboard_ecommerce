@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     // Define repository methods here
-    // CU3
+    // CU3, CU27 (CRUD)
 
     // CU9
     @Query("SELECT o FROM Order o INNER JOIN o.status os WHERE os.name =?1")

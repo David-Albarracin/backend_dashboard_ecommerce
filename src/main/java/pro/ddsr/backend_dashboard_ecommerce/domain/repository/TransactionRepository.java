@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     // Define repository methods here
-    // CU4
+    // CU4 (CRUD)
 
     // CU14
     @Query("SELECT t FROM Transaction t INNER JOIN t.payMethod tp WHERE tp.name =?1")

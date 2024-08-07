@@ -12,7 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     // Define repository methods here
-    // CU1
+    // CU1, CU22 (CRUD)
+    // CU23 (create)
+    // CU24 (update)
+    // CU25 (delete)
 
     // CU7
     @Query("SELECT p FROM Product p INNER JOIN p.productGama pg WHERE pg.name =?1")

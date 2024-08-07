@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Product;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.ProductGama;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Supplier;
 
 
 @Setter
@@ -19,6 +20,8 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.ProductGama;
 @NoArgsConstructor
 public class ProductDto {
     // Define attributes here
+    private Long productId;
+
     @Size(max = 45)
     private String code;
 
@@ -34,9 +37,14 @@ public class ProductDto {
     private Integer priceBuy;
 
     private Long productGama; 
+
+    private Long supplier;
     // Define constructor(s) here
-    public Product toProduct(ProductGama productGama) {
+    public Product toProduct(ProductGama productGama, Supplier supplier) {
         Product product = new Product();
+        if (this.productId != null) {
+            product.setProductId(this.productId);
+        }
         product.setCode(this.code);
         product.setName(this.name);
         product.setDescription(this.description);
@@ -44,6 +52,7 @@ public class ProductDto {
         product.setPriceSale(this.priceSale);
         product.setPriceBuy(this.priceBuy);
         product.setProductGama(productGama);
+        product.setSupplier(supplier);
         return product;
     }
     // Define getter and setter methods here

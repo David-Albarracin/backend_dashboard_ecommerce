@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     // Define repository methods here
-    // CU5
+    // CU5 (CRUD)
 
     // CU11
     @Query("SELECT e FROM Employee e INNER JOIN e.office eo WHERE eo.officeId =?1")

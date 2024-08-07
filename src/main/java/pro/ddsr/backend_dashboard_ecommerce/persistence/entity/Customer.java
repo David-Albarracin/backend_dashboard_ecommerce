@@ -1,7 +1,7 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
-
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -59,6 +60,9 @@ public class Customer {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     Employee employee;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<CustomerAddress> addresses;
 
     @Embedded
     private final Audit audit = new Audit();
