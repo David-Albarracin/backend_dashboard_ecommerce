@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,7 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+//import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -68,10 +70,11 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @NotNull(message = "No puede ser nulo")
+    //@JsonBackReference
     private Customer customer;
 
-    @OneToMany(mappedBy = "customerOrder")
-    List<OrderDetail> orderdetails;
+    // @OneToMany(mappedBy = "customerOrder")
+    // List<OrderDetail> orderDetails;
 
     public enum OrderType {
         COMPRA,

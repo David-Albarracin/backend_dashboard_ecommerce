@@ -14,9 +14,11 @@ import jakarta.transaction.Transactional;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDetailDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.CustomerRepository;
+import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderDetailRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderStatusRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.ProductRepository;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderDetailProjection;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderProjection;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
@@ -39,6 +41,9 @@ public class OrderService {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    OrderDetailRepository orderDetailRepository;
 
     
     @Transactional
@@ -63,12 +68,21 @@ public class OrderService {
 
     
 
-    public Optional<Order> findById(Long id) {
-        return this.orderRepository.findById(id);
+    public Optional<OrderDto> findById(Long id) {
+        
+        Optional<Order> optionalOrder = this.orderRepository.findById(id);
+
+        if (optionalOrder.isPresent()){
+            List<OrderDetailProjection> summarizeDetails = this.orderDetailRepository.findOrderDetailsByOrderId(id);
+            OrderDto foundOrder = OrderDto.toDto(summarizeDetails, optionalOrder.get());
+            return Optional.of(foundOrder);
+
+        }
+        return Optional.empty();
     }
 
-    public List<Order> findByStatus(String nameStatus) {
-        return this.orderRepository.findByStatus(nameStatus);
+    public List<OrderProjection> findByStatus(Long statusId) {
+        return this.orderRepository.findByStatus(statusId);
     }
 
     public List<Order> getOrdersInDateRange(LocalDate startDate, LocalDate endDate) {
@@ -96,7 +110,7 @@ public class OrderService {
             orderItem.setOrderType( order.getOrderType());
             orderItem.setOrderDate( order.getOrderDate());
             orderItem.setStatus( order.getStatus());
-            orderItem.setOrderdetails( order.getOrderdetails());
+            //orderItem.setOrderdetails( order.getOrderdetails());
             
             return Optional.of(this.orderRepository.save(orderItem));
         }
@@ -135,7 +149,7 @@ public class OrderService {
         }
 
         // poner lista de detalles de producto en orden 
-        order.setOrderdetails(orderDetails);
+        //order.setOrderdetails(orderDetails);
 
         return order;
 

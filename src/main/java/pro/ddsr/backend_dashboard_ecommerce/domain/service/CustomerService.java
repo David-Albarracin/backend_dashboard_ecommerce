@@ -36,12 +36,12 @@ public class CustomerService {
         return this.customerRepository.findById(id);
     }
 
-    public List<Customer> findCustomersByCity(String name) {
-        return this.customerRepository.findCustomersByCity(name);
+    public List<Customer> findCustomersByCity(Long cityId) {
+        return this.customerRepository.findCustomersByCity(cityId);
     }
 
-    public List<Customer> findCustomersWithPendingOrders() {
-        return customerRepository.findCustomersWithPendingOrders();
+    public List<Customer> findCustomersWithPendingOrders(Long statusId) {
+        return customerRepository.findCustomersWithPendingOrders(statusId);
     }
 
     public Customer save(Customer Customer) {

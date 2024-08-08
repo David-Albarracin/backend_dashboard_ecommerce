@@ -40,8 +40,10 @@ public class City {
     @ManyToOne
     @JoinColumn(name = "region_id")
     @NotNull(message = "No puede ser nulo")
+
+
     Region region;
 
-    @OneToMany(mappedBy = "city")
-    private Set<CustomerAddress> addresses;
+    // @OneToMany(mappedBy = "city")
+    // private Set<CustomerAddress> addresses;
 }

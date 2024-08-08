@@ -48,10 +48,11 @@ public class CustomerController {
     }
 
     // CU8
-    @GetMapping("/findCustomersByCity")
+    @GetMapping("/bycity/{cityId}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Customer>> viewByCity(@RequestParam String name){
-        List<Customer> listCustomer = customerService.findCustomersByCity(name);
+    public ResponseEntity<List<Customer>> viewByCity(@PathVariable Long cityId){
+        System.out.println(cityId);
+        List<Customer> listCustomer = customerService.findCustomersByCity(cityId);
         if (listCustomer.isEmpty()){
             return ResponseEntity.noContent().build();
         }
@@ -59,10 +60,10 @@ public class CustomerController {
     }
 
     // CU15
-    @GetMapping("/findCustomersWithPendingOrders")
+    @GetMapping("/bystatus/{statusId}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Customer>> viewByPendingOrders(){
-        List<Customer> listCustomer = customerService.findCustomersWithPendingOrders();
+    public ResponseEntity<List<Customer>> viewByPendingOrders(@PathVariable Long statusId){
+        List<Customer> listCustomer = customerService.findCustomersWithPendingOrders(statusId);
         if (listCustomer.isEmpty()){
             return ResponseEntity.noContent().build();
         }

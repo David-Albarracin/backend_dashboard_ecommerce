@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto;
-import pro.ddsr.backend_dashboard_ecommerce.domain.service.CustomerService;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.OrderService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderProjection;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
@@ -36,10 +35,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-
-
-    
-
     @GetMapping
     // @PreAuthorize("hasRole('ADMIN')")
     public List<OrderProjection> listOrder(){
@@ -50,8 +45,8 @@ public class OrderController {
 
     @GetMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Order> view(@PathVariable Long id){
-        Optional<Order> optionalOrder  = orderService.findById(id);
+    public ResponseEntity<OrderDto> view(@PathVariable Long id){
+        Optional<OrderDto> optionalOrder  = orderService.findById(id);
         if (optionalOrder.isPresent()){
             return ResponseEntity.ok(optionalOrder.orElseThrow());
         }
@@ -59,10 +54,10 @@ public class OrderController {
     }
 
     // CU9
-    @GetMapping("/findOrderByStatus")
+    @GetMapping("/bystatus/{statusId}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Order>> viewByStatus(@RequestParam String name){
-        List<Order> listOrder  = orderService.findByStatus(name);
+    public ResponseEntity<List<OrderProjection>> viewByStatus(@PathVariable Long statusId){
+        List<OrderProjection> listOrder  = orderService.findByStatus(statusId);
         if (listOrder.isEmpty()){
             return ResponseEntity.noContent().build();
         }
@@ -70,7 +65,7 @@ public class OrderController {
     }
 
     // CU13
-    @GetMapping("/findOrderByDateRange")
+    @GetMapping("/bydaterange")
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Order>> viewByDateRange(
         @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,

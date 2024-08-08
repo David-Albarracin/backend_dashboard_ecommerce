@@ -3,6 +3,8 @@ package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -71,12 +73,15 @@ public class Customer {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    Employee employee;
+    @NotNull(message = "No puede ser nulo")
+    private Employee employee;
 
     @OneToMany(mappedBy = "customer")
+    //@JsonBackReference
     private Set<CustomerAddress> addresses;
 
     @OneToMany(mappedBy = "customer")
+    @JsonBackReference
     private Set<Order> orders;
 
     @Embedded

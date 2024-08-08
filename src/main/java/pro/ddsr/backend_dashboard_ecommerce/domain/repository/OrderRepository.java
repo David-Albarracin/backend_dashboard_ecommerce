@@ -19,8 +19,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // CU3, CU27 (CRUD)
 
     // CU9
-    @Query("SELECT o FROM Order o INNER JOIN o.status os WHERE os.name =?1")
-    List<Order> findByStatus(String statusName);
+    @Query("SELECT o FROM Order o INNER JOIN o.status os WHERE os.id =:statusId")
+    List<OrderProjection> findByStatus(@Param("statusId") Long statusId);
 
     @Query("SELECT o FROM Order o")
     List<OrderProjection> findAllOrderSummaries();

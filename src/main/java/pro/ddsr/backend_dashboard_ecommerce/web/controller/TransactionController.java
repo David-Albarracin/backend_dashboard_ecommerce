@@ -49,9 +49,9 @@ public class TransactionController {
     }
 
     // CU10
-    @GetMapping("/findTransactionByCustomer")
+    @GetMapping("/bycustomer/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Transaction>> viewByCustomer(@RequestParam Long id){
+    public ResponseEntity<List<Transaction>> viewByCustomer(@PathVariable Long id){
         List<Transaction> listTransaction  = transactionService.findByCustomer(id);
         if (listTransaction.isEmpty()){
             return ResponseEntity.noContent().build();
@@ -60,10 +60,10 @@ public class TransactionController {
     }
 
     // CU14
-    @GetMapping("/findTransactionByPayMethod")
+    @GetMapping("/bypaymethod/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Transaction>> viewByPayMethod(@RequestParam String name){
-        List<Transaction> listTransaction  = transactionService.findByPayMethod(name);
+    public ResponseEntity<List<Transaction>> viewByPayMethod(@PathVariable Long id){
+        List<Transaction> listTransaction  = transactionService.findByPayMethod(id);
         if (listTransaction.isEmpty()){
             return ResponseEntity.noContent().build();
         }

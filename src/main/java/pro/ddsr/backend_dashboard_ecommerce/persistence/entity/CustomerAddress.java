@@ -1,6 +1,8 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,10 +44,13 @@ public class CustomerAddress {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @NotNull(message = "No puede ser nulo")
+    @JsonBackReference
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
     @NotNull(message = "No puede ser nulo")
+    //@JsonBackReference
+
     private City city;
 }

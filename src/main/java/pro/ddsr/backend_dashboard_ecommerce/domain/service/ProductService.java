@@ -47,8 +47,8 @@ public class ProductService {
         return this.productRepository.findById(id);
     }
 
-    public List<Product> findByGama(String gamaName) {
-        return this.productRepository.findByGama(gamaName);
+    public List<Product> findByGama(Long id) {
+        return this.productRepository.findByGama(id);
     }
 
     public List<Product> findByStock(Byte stock) {

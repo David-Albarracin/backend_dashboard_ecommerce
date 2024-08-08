@@ -36,8 +36,8 @@ public class TransactionService {
         return this.transactionRepository.findById(id);
     }
 
-    public List<Transaction> findByPayMethod(String payMethodName) {
-        return this.transactionRepository.findByPayMethod(payMethodName);
+    public List<Transaction> findByPayMethod(Long id) {
+        return this.transactionRepository.findByPayMethod(id);
     }
 
     public List<Transaction> findByCustomer(Long id) {

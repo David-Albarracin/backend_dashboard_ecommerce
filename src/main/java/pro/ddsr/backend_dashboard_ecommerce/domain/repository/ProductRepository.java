@@ -18,8 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // CU25 (delete)
 
     // CU7
-    @Query("SELECT p FROM Product p INNER JOIN p.productGama pg WHERE pg.name =?1")
-    List<Product> findByGama(String gamaName);
+    @Query("SELECT p FROM Product p INNER JOIN p.productGama pg WHERE pg.id =:idGama")
+    List<Product> findByGama(Long idGama);
 
     // CU12
     @Query("SELECT p FROM Product p WHERE p.stock <?1")

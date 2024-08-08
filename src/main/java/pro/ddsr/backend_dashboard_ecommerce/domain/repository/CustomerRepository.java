@@ -17,10 +17,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     // CU2, CU26 (CRUD)
 
     // CU8
-    @Query("SELECT c FROM Customer c JOIN c.addresses ca JOIN ca.city ct WHERE ct.name = :cityName")
-    List<Customer> findCustomersByCity(@Param("cityName") String cityName);
+    @Query("SELECT c FROM Customer c JOIN c.addresses ca JOIN ca.city ct WHERE ct.cityId = :cityId")
+    List<Customer> findCustomersByCity(@Param("cityId") Long cityId);
 
     // CU15
-    @Query("SELECT DISTINCT c FROM Customer c JOIN c.orders co WHERE co.status.id = 1")
-    List<Customer> findCustomersWithPendingOrders();
+    @Query("SELECT DISTINCT c FROM Customer c JOIN c.orders co WHERE co.status.id = :statusId")
+    List<Customer> findCustomersWithPendingOrders(@Param("statusId") Long statusId);
 }

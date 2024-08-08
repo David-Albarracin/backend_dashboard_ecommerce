@@ -78,6 +78,7 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "office_id")
     @NotNull(message = "No puede ser nulo")
+    // @JsonBackReference
     private Office office;
 
     @Column(nullable = false)
