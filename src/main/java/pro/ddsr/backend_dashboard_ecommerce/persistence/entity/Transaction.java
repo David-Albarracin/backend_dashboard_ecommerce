@@ -4,6 +4,7 @@ package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,7 +44,7 @@ public class Transaction {
     @JoinColumn(name = "pay_method_id")
     private PayMethod payMethod;
 
-    @ManyToOne
+    @ManyToOne( cascade =  CascadeType.REMOVE)
     @JoinColumn(name = "order_id")
     private Order order;
 

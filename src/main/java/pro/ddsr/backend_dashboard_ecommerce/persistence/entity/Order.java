@@ -61,11 +61,9 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonBackReference
     private Customer customer;
 
     @OneToMany(mappedBy = "customerOrder")
-    @JsonBackReference
     List<OrderDetail> orderdetails;
 
     public enum OrderType {

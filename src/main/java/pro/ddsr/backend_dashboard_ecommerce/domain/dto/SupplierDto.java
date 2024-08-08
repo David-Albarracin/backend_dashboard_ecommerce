@@ -1,10 +1,32 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.domain.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Supplier;
+
+@Data
+@NoArgsConstructor
 public class SupplierDto {
-    // Define attributes here
+    Long supplierId;
+    private String name;
+    private String contactName;
+    private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private boolean isActive;
 
-    // Define constructor(s) here
+    public Supplier toEntity() {
+        Supplier supplier = new Supplier();
+        supplier.setSupplierId(this.supplierId);
+        supplier.setName(this.name);
+        supplier.setContactName(this.contactName);
+        supplier.setEmail(this.email);
 
-    // Define getter and setter methods here
+        return supplier;
+    }
+
 }
