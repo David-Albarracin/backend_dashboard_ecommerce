@@ -1,6 +1,9 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -12,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -71,6 +75,10 @@ public class Employee {
     @ManyToOne
     @JoinColumn( name = "boss_id")
     private Employee boss;
+
+    @OneToMany(mappedBy = "employee")
+    @JsonBackReference
+    private Set<Customer> customers;
 
     @Embedded
     private final Audit audit = new Audit();

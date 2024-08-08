@@ -1,6 +1,7 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.domain.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,6 @@ import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.CustomerRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderStatusRepository;
-import pro.ddsr.backend_dashboard_ecommerce.domain.repository.ProductGamaRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.ProductRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderProjection;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
@@ -23,7 +23,6 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OrderDetail;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OrderStatus;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Product;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.ProductGama;
 
 @Service
 public class OrderService {
@@ -70,6 +69,10 @@ public class OrderService {
 
     public List<Order> findByStatus(String nameStatus) {
         return this.orderRepository.findByStatus(nameStatus);
+    }
+
+    public List<Order> getOrdersInDateRange(LocalDate startDate, LocalDate endDate) {
+        return orderRepository.findOrdersInDateRange(startDate, endDate);
     }
 
     public Order save(Order Order) {

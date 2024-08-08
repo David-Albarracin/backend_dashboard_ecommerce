@@ -58,6 +58,17 @@ public class EmployeeController {
         return ResponseEntity.ok(listEmployee);
     }
 
+    // CU16
+    @GetMapping("/findEmployeesWithOrders")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Employee>> viewEmployeesWithOrders(){
+        List<Employee> listEmployee  = employeeService.findAllEmployeesWithOrders();
+        if (listEmployee.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listEmployee);
+    }
+
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody Employee employee, BindingResult result){
