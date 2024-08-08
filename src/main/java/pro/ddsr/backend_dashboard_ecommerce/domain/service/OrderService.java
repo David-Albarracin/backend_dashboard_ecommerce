@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import jakarta.transaction.Transactional;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDetailDto;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDetailDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDtoJavaOutput;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.CustomerRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderDetailRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderRepository;
@@ -68,13 +69,13 @@ public class OrderService {
 
     
 
-    public Optional<OrderDto> findById(Long id) {
+    public Optional<OrderDtoJavaOutput> findById(Long id) {
         
         Optional<Order> optionalOrder = this.orderRepository.findById(id);
 
         if (optionalOrder.isPresent()){
             List<OrderDetailProjection> summarizeDetails = this.orderDetailRepository.findOrderDetailsByOrderId(id);
-            OrderDto foundOrder = OrderDto.toDto(summarizeDetails, optionalOrder.get());
+            OrderDtoJavaOutput foundOrder = OrderDtoJavaOutput.toDto(summarizeDetails, optionalOrder.get());
             return Optional.of(foundOrder);
 
         }

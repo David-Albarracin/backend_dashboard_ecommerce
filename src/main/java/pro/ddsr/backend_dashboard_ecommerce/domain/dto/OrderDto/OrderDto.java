@@ -1,20 +1,21 @@
-package pro.ddsr.backend_dashboard_ecommerce.domain.dto;
+package pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderDetailProjection;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OrderDetail;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OrderStatus;
 
+/**
+ * Esta clase es el dto que se procesa cuando hay informacion de ordenes 
+ * desde el frontEnd
+*/
 @Data
 @NoArgsConstructor
 public class OrderDto {
@@ -47,9 +48,9 @@ public class OrderDto {
     private List< OrderDetailDto> orderdetails;
 
     
-    private List<OrderDetailProjection> detailsProjection;
-
-
+    /**
+     * Convierte el dto de la orden a la entidad de orden
+    */
     public Order toOrder(Customer customer, OrderStatus orderStatus){
 
         Order order = new Order();
@@ -71,26 +72,5 @@ public class OrderDto {
         return order;
     }
 
-    public static OrderDto toDto(List<OrderDetailProjection> summarizedDetails, Order order){
-        OrderDto orderDto = new OrderDto();
-
-        
-        orderDto.setCustomerId( order.getCustomer().getCustomerId());
-        orderDto.setCommentary(order.getCommentary());
-
-        if ( order.getDeliverDate() != null){
-            orderDto.setDeliverDate(order.getDeliverDate());
-        }
-        orderDto.setExpectedDate( order.getExpectedDate());
-        orderDto.setOrderDate( order.getOrderDate());
-        orderDto.setOrderStatusId( order.getStatus().getOrderStatusId());
-        orderDto.setOrderId( order.getOrderId());
-        orderDto.setOrderType( order.getOrderType().name());
-        orderDto.setDetailsProjection(summarizedDetails);
-
-        return orderDto;
-
-
-
-    }
+    
 }

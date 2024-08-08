@@ -1,9 +1,8 @@
 
-package pro.ddsr.backend_dashboard_ecommerce.domain.dto;
+package pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto;
 
 
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
