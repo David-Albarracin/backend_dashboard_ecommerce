@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDto;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDtoJavaOutput;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDtoOutput;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.OrderService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderProjection;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
@@ -46,8 +46,8 @@ public class OrderController {
 
     @GetMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<OrderDtoJavaOutput> view(@PathVariable Long id){
-        Optional<OrderDtoJavaOutput> optionalOrder  = orderService.findById(id);
+    public ResponseEntity<OrderDtoOutput> view(@PathVariable Long id){
+        Optional<OrderDtoOutput> optionalOrder  = orderService.findById(id);
         if (optionalOrder.isPresent()){
             return ResponseEntity.ok(optionalOrder.orElseThrow());
         }

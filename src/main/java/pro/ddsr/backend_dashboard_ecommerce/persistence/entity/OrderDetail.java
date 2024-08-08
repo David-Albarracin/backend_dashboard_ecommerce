@@ -1,6 +1,9 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -47,6 +50,7 @@ public class OrderDetail {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull(message = "No puede ser nulo")
     private Product product;
 

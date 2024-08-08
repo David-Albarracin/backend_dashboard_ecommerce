@@ -82,7 +82,6 @@ public class Employee {
     private Office office;
 
     @Column(nullable = false)
-    @NotBlank(message = "Ingrese la extension")
     @NotNull(message = "No puede ser nulo")
     private Integer extension;
 

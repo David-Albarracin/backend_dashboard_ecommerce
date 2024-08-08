@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto.EmployeeDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.EmployeeService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Employee;
 import jakarta.validation.Valid;
@@ -70,7 +71,7 @@ public class EmployeeController {
 
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody Employee employee, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody EmployeeDto employee, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
         }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OrderStatus;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order.OrderType;
 
 /**
  * Esta clase es el dto que se procesa cuando hay informacion de ordenes 
@@ -67,6 +68,7 @@ public class OrderDto {
         order.setStatus(orderStatus);
         order.setCommentary(this.commentary);
         order.setCustomer(customer);
+        order.setOrderType( OrderType.valueOf(this.getOrderType()));
 
         
         return order;

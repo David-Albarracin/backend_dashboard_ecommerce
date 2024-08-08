@@ -15,7 +15,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
  */
 @NoArgsConstructor
 @Data
-public class OrderDtoJavaOutput {
+public class OrderDtoOutput {
 
     private Long orderId;
     
@@ -42,8 +42,8 @@ public class OrderDtoJavaOutput {
      * @param order
      * @return el dto que se muestra al front
     */
-    public static OrderDtoJavaOutput toDto(List<OrderDetailProjection> summarizedDetails, Order order){
-        OrderDtoJavaOutput orderDto = new OrderDtoJavaOutput();
+    public static OrderDtoOutput toDto(List<OrderDetailProjection> summarizedDetails, Order order){
+        OrderDtoOutput orderDto = new OrderDtoOutput();
 
         orderDto.setCustomerId( order.getCustomer().getCustomerId());
         orderDto.setCommentary(order.getCommentary());
