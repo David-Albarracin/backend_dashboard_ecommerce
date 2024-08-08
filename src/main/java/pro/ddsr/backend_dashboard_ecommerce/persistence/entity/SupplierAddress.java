@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,23 +25,27 @@ import lombok.Setter;
 @Entity
 @Table(name="supplier_address")
 public class SupplierAddress {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long supplierAddressId;
 
-      @Column(length = 50, nullable = false)
+    @Column(name = "address_line1", length = 50, nullable = false)
+    @NotBlank(message = "Ingrese la direccion 1")
+    @NotNull(message = "No puede ser nulo")
     private String addressLine1;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "address_line2", length = 50, nullable = false)
+    @NotBlank(message = "Ingrese la direccion 2")
+    @NotNull(message = "No puede ser nulo")
     private String addressLine2;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id")
+    @NotNull(message = "No puede ser nulo")
     private Supplier supplier;
     
     @ManyToOne
     @JoinColumn(name = "city_id")
+    @NotNull(message = "No puede ser nulo")
     private City city;
-
 }

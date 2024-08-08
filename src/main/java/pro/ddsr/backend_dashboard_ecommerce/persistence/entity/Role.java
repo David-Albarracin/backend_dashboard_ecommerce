@@ -39,12 +39,11 @@ public class Role {
     @Enumerated(EnumType.STRING)
     RoleEnum name;
 
-     @ManyToMany
+    @ManyToMany
     @JoinTable(
         name = "role_permission",
         joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"),
         inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "permissionId")
     )
     private Set<Permission> permissions;
-
 }

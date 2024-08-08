@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,29 +24,32 @@ import lombok.Setter;
 @Entity
 @Table(name="order_detail")
 public class OrderDetail {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long orderDetailId;
 
-     @Column
+    @Column(nullable = false)
+    @NotNull(message = "No puede ser nulo")
     private Byte amount;
 
-    @Column
+    @Column(name = "unit_price", nullable = false)
+    @NotNull(message = "No puede ser nulo")
     private Integer unitPrice;
 
-    @Column
+    @Column(name = "total_price", nullable = false)
+    @NotNull(message = "No puede ser nulo")
     private Integer totalPrice;
 
-    @Column
+    @Column(name = "order_line")
     private Short orderLine;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @NotNull(message = "No puede ser nulo")
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @NotNull(message = "No puede ser nulo")
     private Order customerOrder;
-
 }

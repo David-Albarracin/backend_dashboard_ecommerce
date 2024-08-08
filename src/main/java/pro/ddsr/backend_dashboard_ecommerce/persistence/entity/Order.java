@@ -4,7 +4,7 @@ package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,19 +34,22 @@ import lombok.ToString;
 @Table(name="orders")
 @ToString
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     Long orderId;
 
-    @Column
+    @Column(name = "order_date", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "No puede ser nulo")
     private LocalDate orderDate;
 
-    @Column
+    @Column(name = "expected_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expectedDate;
 
-    @Column
+    @Column(name = "deliver_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deliverDate;
 
     @Column(length = 45)
@@ -53,24 +57,24 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "order_status_id")
+    @NotNull(message = "No puede ser nulo")
     private OrderStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(name = "order_type", length = 20, nullable = false)
+    @NotNull(message = "No puede ser nulo")
     private OrderType orderType;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonBackReference
+    @NotNull(message = "No puede ser nulo")
     private Customer customer;
 
     @OneToMany(mappedBy = "customerOrder")
-    @JsonBackReference
-    List<OrderDetail> orderdetails;
+    List<OrderDetail> orderDetails;
 
     public enum OrderType {
         COMPRA,
         VENTA
     }
-
 }

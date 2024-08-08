@@ -10,6 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,29 +34,31 @@ public class Supplier {
     @Column(name="supplier_id")
     Long supplierId;
 
-      @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false)
+    @NotBlank(message = "Ingrese el nombre")
+    @NotNull(message = "No puede ser nulo")
     private String name;
 
-    @Column(length = 50)
+    @Column(name = "contact_name", length = 50, nullable = false)
+    @NotBlank(message = "Ingrese el nombre del contacto")
+    @NotNull(message = "No puede ser nulo")
     private String contactName;
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
+    @NotNull(message = "No puede ser nulo")
+    @Email
     private String email;
-
 
     @Embedded
     private final Audit audit = new Audit();
 
-        
     @PrePersist
     public void prePersist() {
         audit.prePersistAudit();
     }
 
-    
     @PreUpdate
     public void preUpdate() {
         audit.preUpdateAudit();
     }
-
 }

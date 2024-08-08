@@ -17,6 +17,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,29 +34,39 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.enumObj.Audit;
 @Entity
 @Table(name="customer")
 public class Customer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "customer_id",length = 255, nullable = false)
     Long customerId;
 
-    @Column(length = 255, nullable = false)
+    @Column(name = "first_name", length = 255, nullable = false)
+    @NotBlank(message = "Ingrese el primer nombre")
+    @NotNull(message = "No puede ser nulo")
     private String firstName;
 
-    @Column(length = 255, nullable = false)
+    @Column(name = "first_surname", length = 255, nullable = false)
+    @NotBlank(message = "Ingrese el primer apellido")
+    @NotNull(message = "No puede ser nulo")
     private String firstSurname;
 
-    @Column(length = 255, nullable = false)
+    @Column(name = "last_name", length = 255, nullable = false)
+    @NotBlank(message = "Ingrese el segundo nombre")
+    @NotNull(message = "No puede ser nulo")
     private String lastName;
 
-    @Column(length = 255, nullable = false)
+    @Column(name = "last_surname", length = 255, nullable = false)
+    @NotBlank(message = "Ingrese el segundo apellido")
+    @NotNull(message = "No puede ser nulo")
     private String lastSurname;
 
-    @Column(length = 255, nullable = false)
+    @Column(name = "document_number", length = 255, nullable = false)
+    @NotBlank(message = "Ingrese el numero de documento")
+    @NotNull(message = "No puede ser nulo")
     private String documentNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 50, nullable = false)
+    @Column(name = "document_type", length = 50, nullable = false)
+    @NotNull(message = "No puede ser nulo")
     private DocumentType documentType;
 
     @ManyToOne
@@ -69,14 +81,12 @@ public class Customer {
 
     @Embedded
     private final Audit audit = new Audit();
-
         
     @PrePersist
     public void prePersist() {
         audit.prePersistAudit();
     }
 
-    
     @PreUpdate
     public void preUpdate() {
         audit.preUpdateAudit();
@@ -88,5 +98,4 @@ public class Customer {
         NIT,
         PASAPORTE
     }
-
 }
