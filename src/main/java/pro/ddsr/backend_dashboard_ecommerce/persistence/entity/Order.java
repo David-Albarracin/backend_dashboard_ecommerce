@@ -71,7 +71,7 @@ public class Order {
     private Customer customer;
 
     @OneToMany(mappedBy = "customerOrder")
-    List<OrderDetail> orderDetails;
+    List<OrderDetail> orderdetails;
 
     public enum OrderType {
         COMPRA,

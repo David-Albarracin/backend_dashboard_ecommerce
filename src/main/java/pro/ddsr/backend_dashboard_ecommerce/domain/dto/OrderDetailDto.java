@@ -1,10 +1,49 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.domain.dto;
 
+
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OrderDetail;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Product;
+
+@Data
+@NoArgsConstructor
 public class OrderDetailDto {
-    // Define attributes here
 
-    // Define constructor(s) here
+    private  Long orderDetailId;
 
-    // Define getter and setter methods here
+    private Long productId;
+
+    private Long orderId;
+
+    private Byte amount;
+
+    private Short lineNumber;
+
+    private int totalPrice;
+
+    private int unitPrice;
+
+
+    public OrderDetail toOrderDetail(Product product, Order order){
+        
+        OrderDetail orderDetail = new OrderDetail();
+
+        if (this.orderDetailId  != null ){
+            orderDetail.setOrderDetailId(this.orderDetailId);
+        }
+
+        orderDetail.setProduct(product);
+        orderDetail.setCustomerOrder(order);
+        orderDetail.setOrderLine(this.lineNumber);
+        orderDetail.setTotalPrice(this.totalPrice);
+        orderDetail.setAmount(this.amount);
+
+
+        return orderDetail;
+    }
 }

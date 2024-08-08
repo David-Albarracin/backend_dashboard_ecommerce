@@ -22,9 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import pro.ddsr.backend_dashboard_ecommerce.domain.service.OrderService;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
 import jakarta.validation.Valid;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.service.CustomerService;
+import pro.ddsr.backend_dashboard_ecommerce.domain.service.OrderService;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderProjection;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
 
 @RestController
 @RequestMapping("/orders")
@@ -33,10 +36,14 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+
+
+    
+
     @GetMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public List<Order> listOrder(){
-        List<Order> orders = this.orderService.findAll();
+    public List<OrderProjection> listOrder(){
+        List<OrderProjection> orders = orderService.findAllProjections();
         orders.forEach(order -> System.out.println(order)); // Imprime cada pedido en la consola
         return orders;
     }
@@ -77,20 +84,41 @@ public class OrderController {
 
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody Order order, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody OrderDto orderDto, BindingResult result){
+
+        // validaciones de validator de spring
         if (result.hasFieldErrors()) {
             return validation(result);
+        }
+
+        // validaciones personalizadas
+        Order order = this.orderService.NewOrder(orderDto, result);
+        if (order == null) {
+            return ResponseEntity.badRequest().body("Errores de validacion (id de cliente / id de estado de orden)");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(order));
     }
 
     @PutMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Order> update(@PathVariable Long id, @Valid @RequestBody Order order){
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody OrderDto orderDto, BindingResult result){
+        // validaciones de validator de spring
+        if (result.hasFieldErrors()) {
+            return ResponseEntity.badRequest().body(result);
+        }
+
+        // validaciones personalizadas
+        Order order = this.orderService.NewOrder(orderDto, result);
+        if (order == null) {
+            return ResponseEntity.badRequest().body("Errores de validacion (id de cliente / id de estado de orden)");
+        }
+
         Optional<Order> orderOptional = this.orderService.update(id, order);
+        // valida que exista la orden
         if (orderOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(orderOptional.orElseThrow());
         }
+
         return ResponseEntity.notFound().build();
     }
 
