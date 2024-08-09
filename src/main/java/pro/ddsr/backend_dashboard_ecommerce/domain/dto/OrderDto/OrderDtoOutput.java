@@ -6,7 +6,9 @@ import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderDetailProjection;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.OrderStatus;
 
 /**
  * Esta clase es lo que se envia 
@@ -25,15 +27,15 @@ public class OrderDtoOutput {
     
     private LocalDate orderDate;
 
-    private Long customerId;
+    private Customer customer;
 
-    private String orderStatusName;
+    private OrderStatus status;
 
     private String commentary;
 
     private String orderType;
     
-    private List<OrderDetailProjection> orderdetails;
+    private List<OrderDetailProjection> orderDetails;
 
 
     /**
@@ -45,7 +47,7 @@ public class OrderDtoOutput {
     public static OrderDtoOutput toDto(List<OrderDetailProjection> summarizedDetails, Order order){
         OrderDtoOutput orderDto = new OrderDtoOutput();
 
-        orderDto.setCustomerId( order.getCustomer().getCustomerId());
+        orderDto.setCustomer( order.getCustomer());
         orderDto.setCommentary(order.getCommentary());
 
         if ( order.getDeliverDate() != null){
@@ -53,10 +55,10 @@ public class OrderDtoOutput {
         }
         orderDto.setExpectedDate( order.getExpectedDate());
         orderDto.setOrderDate( order.getOrderDate());
-        orderDto.setOrderStatusName( order.getStatus().getName());
+        orderDto.setStatus( order.getStatus());
         orderDto.setOrderId( order.getOrderId());
         orderDto.setOrderType( order.getOrderType().name());
-        orderDto.setOrderdetails(summarizedDetails);
+        orderDto.setOrderDetails(summarizedDetails);
 
         
         return orderDto;

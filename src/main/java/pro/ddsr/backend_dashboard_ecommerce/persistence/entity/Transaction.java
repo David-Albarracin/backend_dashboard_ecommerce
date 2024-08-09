@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,7 +50,7 @@ public class Transaction {
     @NotNull(message = "No puede ser nulo")
     private PayMethod payMethod;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "order_id")
     @NotNull(message = "No puede ser nulo")
     private Order order;

@@ -59,7 +59,7 @@ public class EmployeeController {
     }
 
     // CU16
-    @GetMapping("/findEmployeesWithOrders")
+    @GetMapping("/withorders")
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Employee>> viewEmployeesWithOrders(){
         List<Employee> listEmployee  = employeeService.findAllEmployeesWithOrders();

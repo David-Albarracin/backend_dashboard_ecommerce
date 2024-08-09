@@ -40,7 +40,7 @@ public class OrderController {
     // @PreAuthorize("hasRole('ADMIN')")
     public List<OrderProjection> listOrder(){
         List<OrderProjection> orders = orderService.findAllProjections();
-        orders.forEach(order -> System.out.println(order)); // Imprime cada pedido en la consola
+        //orders.forEach(order -> System.out.println(order)); // Imprime cada pedido en la consola
         return orders;
     }
 

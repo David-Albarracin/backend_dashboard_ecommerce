@@ -2,13 +2,13 @@
 package pro.ddsr.backend_dashboard_ecommerce.persistence.entity;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -74,6 +74,14 @@ public class Order {
     @NotNull(message = "No puede ser nulo")
     @JsonBackReference
     private Customer customer;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<Transaction> transactions;
+
+    @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<OrderDetail> orderDetails;
 
 
     public enum OrderType {

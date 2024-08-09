@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -94,7 +95,11 @@ public class Employee {
     @JoinColumn(name = "boss_id")
     private Employee boss;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "boss", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<Employee> employees;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @JsonBackReference
     private Set<Customer> customers;
 

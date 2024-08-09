@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -26,6 +27,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.enumObj.Audit;
 
 @Setter
@@ -34,11 +36,12 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.enumObj.Audit;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name="customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "customer_id",length = 255, nullable = false)
+    @Column(name= "customer_id",length = 255)
     Long customerId;
 
     @Column(name = "first_name", length = 255, nullable = false)
@@ -76,11 +79,15 @@ public class Customer {
     @NotNull(message = "No puede ser nulo")
     private Employee employee;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     //@JsonBackReference
     private Set<CustomerAddress> addresses;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    //@JsonBackReference
+    private Set<CustomerPhone> phones;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonBackReference
     private Set<Order> orders;
 

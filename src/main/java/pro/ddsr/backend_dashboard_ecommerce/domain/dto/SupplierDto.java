@@ -1,7 +1,6 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.domain.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.Data;
