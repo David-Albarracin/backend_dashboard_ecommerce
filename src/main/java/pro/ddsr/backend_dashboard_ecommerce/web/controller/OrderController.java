@@ -87,12 +87,8 @@ public class OrderController {
             return validation(result);
         }
 
-        // validaciones personalizadas
-        Order order = this.orderService.NewOrder(orderDto, result);
-        if (order == null) {
-            return ResponseEntity.badRequest().body("Errores de validacion (id de cliente / id de estado de orden)");
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(order));
+       
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.NewOrder(orderDto));
     }
 
     @PutMapping("/{id}")
@@ -104,12 +100,7 @@ public class OrderController {
         }
 
         // validaciones personalizadas
-        Order order = this.orderService.NewOrder(orderDto, result);
-        if (order == null) {
-            return ResponseEntity.badRequest().body("Errores de validacion (id de cliente / id de estado de orden)");
-        }
-
-        Optional<Order> orderOptional = this.orderService.update(id, order);
+        Optional<Order> orderOptional = this.orderService.update(id, orderDto);
         // valida que exista la orden
         if (orderOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(orderOptional.orElseThrow());

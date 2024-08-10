@@ -2,6 +2,7 @@ package pro.ddsr.backend_dashboard_ecommerce.domain.dto.orderDto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -46,32 +47,42 @@ public class OrderDto {
     private String orderType;
 
     @NotEmpty( message =  "No se puede hacer un pedido vacio")
-    private List< OrderDetailDto> orderdetails;
+    private Set< OrderDetailDto> orderdetails;
 
     
     /**
      * Convierte el dto de la orden a la entidad de orden
     */
-    public Order toOrder(Customer customer, OrderStatus orderStatus){
+    public static Order toOrder( OrderDto dto){
 
-        Order order = new Order();
+        // creacion de customer
+        Customer newCustomer = new Customer();
+        newCustomer.setCustomerId( dto.getCustomerId());
 
-        if (this.orderId != null){
-            order.setOrderId(this.orderId);
+        // crecaion de un estado de orden
+        OrderStatus newOrderStatus = new OrderStatus();
+        newOrderStatus.setOrderStatusId( dto.getOrderStatusId() );
+
+        // construyendo la entidad
+        Order newOrder = Order.builder()
+            .orderDate( dto.getOrderDate())
+            .expectedDate( dto.getExpectedDate())
+            .status( newOrderStatus)
+            .customer(newCustomer)
+            .orderType( OrderType.valueOf( dto.getOrderType()))
+            .build();
+
+        // setendo la fecha de entrega si esta presente
+        if ( dto.getDeliverDate() != null){
+            newOrder.setDeliverDate(dto.getDeliverDate());
         }
 
-        if ( this.deliverDate != null){
-            order.setDeliverDate(this.deliverDate);
+        // seteando el id, si esta presente
+        if (dto.getOrderId()!= null){
+            newOrder.setOrderId( dto.getOrderId() );
         }
-        order.setOrderDate(this.orderDate);
-        order.setExpectedDate(this.expectedDate);
-        order.setStatus(orderStatus);
-        order.setCommentary(this.commentary);
-        order.setCustomer(customer);
-        order.setOrderType( OrderType.valueOf(this.getOrderType()));
 
-        
-        return order;
+        return newOrder;
     }
 
     

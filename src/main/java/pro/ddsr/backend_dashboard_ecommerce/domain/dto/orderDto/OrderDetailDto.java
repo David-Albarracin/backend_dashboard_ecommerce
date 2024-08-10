@@ -28,21 +28,32 @@ public class OrderDetailDto {
     private int unitPrice;
 
 
-    public OrderDetail toOrderDetail(Product product, Order order){
+    public static OrderDetail toOrderDetail( OrderDetailDto dto){
         
-        OrderDetail orderDetail = new OrderDetail();
+        // creacion del producto
+        Product product = new Product();
+        product.setProductId( dto.getProductId() );
 
-        if (this.orderDetailId  != null ){
-            orderDetail.setOrderDetailId(this.orderDetailId);
+        // creacion de order
+        Order newOrder = new Order();
+        newOrder.setOrderId( dto.getOrderId());
+
+       
+        // creacion del objeto
+        OrderDetail newOrderDetail = OrderDetail.builder()
+            .product(product)
+            .customerOrder(newOrder)
+            .amount( dto.getAmount())
+            .orderLine( dto.getLineNumber())
+            .totalPrice( dto.getTotalPrice())
+            .unitPrice( dto.getUnitPrice() )
+            .build();
+
+        // seteo del id ( si esta presente)
+        if (dto.getOrderDetailId()  != null ){
+            newOrderDetail.setOrderDetailId( dto.getOrderDetailId());
         }
 
-        orderDetail.setProduct(product);
-        orderDetail.setCustomerOrder(order);
-        orderDetail.setOrderLine(this.lineNumber);
-        orderDetail.setTotalPrice(this.totalPrice);
-        orderDetail.setAmount(this.amount);
-
-
-        return orderDetail;
+        return newOrderDetail;
     }
 }

@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,15 +35,6 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    // se inyecta el repositorio de customer
-    @Autowired
-    OrderStatusRepository orderStatusRepository;
-
-    @Autowired
-    CustomerRepository customerRepository;
-
-    @Autowired
-    ProductRepository productRepository;
 
     @Autowired
     OrderDetailRepository orderDetailRepository;
@@ -90,69 +83,41 @@ public class OrderService {
         return orderRepository.findOrdersInDateRange(startDate, endDate);
     }
 
-    public Order save(Order Order) {
-        return this.orderRepository.save(Order);
-    }
 
-    public Optional<Order> update(Long id, Order order) {
+
+    public Optional<Order> update(Long id, OrderDto order) {
         Optional<Order> optionalOrder = this.orderRepository.findById(id);
         if (optionalOrder.isPresent()) {
 
-            Order orderItem = optionalOrder.orElseThrow();
-            
-            orderItem.setCommentary( order.getCommentary());
-            orderItem.setCustomer( order.getCustomer() );
+           order.setOrderId(id); // solo por si acaso xd
+           Order updateOrder = this.NewOrder(order);
 
-            if ( order.getDeliverDate() != null){
-                orderItem.setDeliverDate( order.getDeliverDate() );
-            }
 
-            orderItem.setExpectedDate( order.getExpectedDate());
-            orderItem.setOrderType( order.getOrderType());
-            orderItem.setOrderDate( order.getOrderDate());
-            orderItem.setStatus( order.getStatus());
-            //orderItem.setOrderdetails( order.getOrderdetails());
-            
-            return Optional.of(this.orderRepository.save(orderItem));
         }
         return optionalOrder;
     }
 
     /*
-     * Parsea un dto a una Orden (REALIZA VALIDACIONES PERSONALIZADAS)
+     * Parsea un dto a una Orden  y sus detalles, y lo guarda
     */
-    public Order NewOrder(OrderDto orderDto, BindingResult result){
+    public Order NewOrder(OrderDto orderDto){
         
-        // busca el estado de la orden
-        Optional<OrderStatus> foundOrderStatus = this.orderStatusRepository.findById( orderDto.getOrderStatusId());
-        Optional<Customer> optionalCustomer = this.customerRepository.findById(orderDto.getCustomerId());
+       // convertir el dto de orden  y guardar
+       Order newOrder = this.orderRepository.save(OrderDto.toOrder(orderDto));
 
-        if (!foundOrderStatus.isPresent()){
-            return null;
-        }
-        if (!optionalCustomer.isPresent()){
-            return null;
 
-        }
+       // convertir los detalles de orden 
+    Set<OrderDetail> orderDetails = orderDto.getOrderdetails().stream()
+        .map( dto -> {
+            dto.setOrderId( newOrder.getOrderId());
+            return OrderDetailDto.toOrderDetail(dto);
+        })
+        .collect( Collectors.toSet());
+    
+        this.orderDetailRepository.saveAll(orderDetails);
+        newOrder.setOrderDetails(orderDetails);
 
-        // construye la orden
-        OrderStatus newOrderStatus = foundOrderStatus.get();
-        Customer newCustomer = optionalCustomer.get();
-
-        Order order = orderDto.toOrder(newCustomer, newOrderStatus);
-        List<OrderDetail> orderDetails = new ArrayList<>();
-
-        // pasar dto  a orden :(, por favor no poner muchos productos .-.
-        for (OrderDetailDto detail : orderDto.getOrderdetails()){
-
-            Product product = this.productRepository.findById(detail.getProductId()).get();
-            orderDetails.add(detail.toOrderDetail(product, order));
-        }
-
-        // poner lista de detalles de producto en orden 
-        //order.setOrderdetails(orderDetails);
-
-        return order;
+        return newOrder;
 
     }
 
