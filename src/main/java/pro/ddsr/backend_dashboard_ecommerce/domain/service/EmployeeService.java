@@ -72,13 +72,25 @@ public class EmployeeService {
         return this.employeeRepository.save(employee);
     }
 
-    public Optional<Employee> update(Long id, Employee employee) {
+    public Optional<Employee> update(Long id, EmployeeDto dto) {
+
         Optional<Employee> optionalEmployee = this.employeeRepository.findById(id);
+
         if (optionalEmployee.isPresent()) {
-            Employee employeeItem = optionalEmployee.orElseThrow();
+                   
             //SETS
+            // nueva oficina 
+            Office office = new Office();
+            office.setOfficeId( dto.getOfficeId());
+
+            // nuevo jefe
+            Employee newEmployeeBoss = new Employee();
+            newEmployeeBoss.setEmployeeId(dto.getBossId()); 
+
+            // conversion a entidad
+            Employee newEmployee = EmployeeDto.toEntity(dto, office, newEmployeeBoss);
             
-            return Optional.of(this.employeeRepository.save(employeeItem));
+            return Optional.of(this.employeeRepository.save(newEmployee));
         }
         return optionalEmployee;
     }

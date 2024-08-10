@@ -76,7 +76,6 @@ public class Customer {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    @NotNull(message = "No puede ser nulo")
     private Employee employee;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

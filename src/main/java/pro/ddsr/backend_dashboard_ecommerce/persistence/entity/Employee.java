@@ -95,11 +95,11 @@ public class Employee {
     @JoinColumn(name = "boss_id")
     private Employee boss;
 
-    @OneToMany(mappedBy = "boss", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "boss")
     @JsonBackReference
     private Set<Employee> employees;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "employee")
     @JsonBackReference
     private Set<Customer> customers;
 

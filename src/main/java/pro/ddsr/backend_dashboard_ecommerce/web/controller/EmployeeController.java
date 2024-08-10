@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -80,7 +81,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Employee> update(@PathVariable Long id, @Valid @RequestBody Employee employee){
+    public ResponseEntity<Employee> update(@PathVariable Long id, @Valid @RequestBody EmployeeDto employee){
         Optional<Employee> employeeOptional = this.employeeService.update(id, employee);
         if (employeeOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(employeeOptional.orElseThrow());
@@ -90,14 +91,19 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Employee> delete(@PathVariable Long id){
-        //Employee employee = new Employee();
-        //employee.setId(id);
-        Optional<Employee> optionalEmployee = this.employeeService.delete(id);
-        if (optionalEmployee.isPresent()){
-            return ResponseEntity.ok(optionalEmployee.orElseThrow());
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        
+        try {
+            Optional<Employee> optionalEmployee = this.employeeService.delete(id);
+            if (optionalEmployee.isPresent()){
+                return ResponseEntity.ok(optionalEmployee.orElseThrow());
+            }
+            return ResponseEntity.notFound().build();
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("No se puede eliminar el empleado ya que esta asignado a un cliente");
         }
-        return ResponseEntity.notFound().build();
+        
     }
 
     private ResponseEntity<?> validation(BindingResult result) {

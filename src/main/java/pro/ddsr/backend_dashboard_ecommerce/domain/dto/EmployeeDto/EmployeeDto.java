@@ -71,9 +71,7 @@ public class EmployeeDto {
             employee.setBoss( boss);
         }
 
-        /*
-         * TODO: Estructura de empleado, clientes y ordenes
-        */
+        
         // setteando el resto de los datos
             employee.setOffice(office);
             employee.setCharge( dto.getCharge());

@@ -7,19 +7,19 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Role;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDto {
 
-    @NotBlank (message = "email must not be empty")
-    private String email;
+    @NotBlank (message = "username must not be empty")
+    private String username;
 
     @NotBlank( message =  "password must not be empty")
     private String password;
 
-
-    private Set<String> roles;
+    private Set<Role> roles;
 
 }
