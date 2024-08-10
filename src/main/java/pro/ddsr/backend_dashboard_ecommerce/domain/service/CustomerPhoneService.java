@@ -3,11 +3,14 @@ package pro.ddsr.backend_dashboard_ecommerce.domain.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-
+import jakarta.validation.Valid;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto.CustomerPhoneDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.CustomerPhoneRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.CustomerPhone;
 
@@ -36,8 +39,19 @@ public class CustomerPhoneService {
         return this.customer_phoneRepository.findById(id);
     }
 
-    public CustomerPhone save(CustomerPhone CustomerPhone) {
-        return this.customer_phoneRepository.save(CustomerPhone);
+    public void saveAll(@Valid Set<CustomerPhoneDto> customer_phone, Long customerId) {
+
+        // obtener telefonos
+        Set<CustomerPhone> phones = customer_phone.stream()
+            .map( phone -> {
+                phone.setCustomerId(customerId);
+                CustomerPhone newPhone = CustomerPhoneDto.toEntity(phone);
+                return newPhone;
+            })
+            .collect(Collectors.toSet());
+
+        // guardar todo
+        this.customer_phoneRepository.saveAll(phones);
     }
 
     public Optional<CustomerPhone> update(Long id, CustomerPhone customer_phone) {

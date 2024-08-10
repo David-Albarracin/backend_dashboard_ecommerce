@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto.CustomerPhoneDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.CustomerPhoneService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.CustomerPhone;
 
@@ -49,11 +51,14 @@ public class CustomerPhoneController {
 
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody CustomerPhone customer_phone, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody Set<CustomerPhoneDto> customer_phone, BindingResult result, Long customerId){
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer_phoneService.save(customer_phone));
+
+        this.customer_phoneService.saveAll(customer_phone, customerId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Creados correctamente");
     }
 
     @PutMapping("/{id}")

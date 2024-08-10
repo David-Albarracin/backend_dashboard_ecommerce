@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto.CustomerAddressDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.CustomerAddressService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.CustomerAddress;
 
@@ -49,11 +51,12 @@ public class CustomerAddressController {
 
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody CustomerAddress customer_address, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody Set<CustomerAddressDto> customer_address, BindingResult result, Long customerId){
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer_addressService.save(customer_address));
+        this.customer_addressService.saveAll(customer_address, customerId);
+        return ResponseEntity.status(HttpStatus.CREATED).body("creados correctamente");
     }
 
     @PutMapping("/{id}")

@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto.CustomerDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.service.CustomerAddressService;
+import pro.ddsr.backend_dashboard_ecommerce.domain.service.CustomerPhoneService;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.CustomerService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
 import jakarta.validation.Valid;
@@ -29,6 +32,12 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired 
+    private CustomerPhoneService customerPhoneService;
+
+    @Autowired
+    private CustomerAddressService customerAddressService;
 
     @GetMapping
     // @PreAuthorize("hasRole('ADMIN')")
@@ -71,16 +80,21 @@ public class CustomerController {
 
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody Customer customer, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody CustomerDto customer, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(customer));
+        Customer newCustomer = this.customerService.save(customer);
+
+        this.customerAddressService.saveAll( customer.getAddresses(), newCustomer.getCustomerId());
+        this.customerPhoneService.saveAll( customer.getPhones(), newCustomer.getCustomerId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(newCustomer);
     }
 
     @PutMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Customer> update(@PathVariable Long id, @Valid @RequestBody Customer customer){
+    public ResponseEntity<Customer> update(@PathVariable Long id, @Valid @RequestBody CustomerDto customer){
         Optional<Customer> customerOptional = this.customerService.update(id, customer);
         if (customerOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(customerOptional.orElseThrow());

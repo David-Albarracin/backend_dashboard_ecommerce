@@ -2,12 +2,14 @@
 package pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto;
 
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.CustomerAddressDto;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.CustomerAddress;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.CustomerPhone;
@@ -18,7 +20,7 @@ import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer.Document
 @NoArgsConstructor
 public class CustomerDto {
     
-    private Long id;
+    private Long customerId;
 
     @NotBlank(message = "Ingrese el segundo nombre")
     @NotNull(message = "No puede ser nulo")
@@ -47,30 +49,36 @@ public class CustomerDto {
     private Long employeeId;
 
     @NotNull( message =  "el cliente debe tener direcciones")
-    private Set<CustomerAddressDto> addresses;
+    private Set<@Valid CustomerAddressDto> addresses;
 
-    private Set<CustomerPhone> phones;
+    @NotNull (message =  "el cliente debe tener telefonos")
+    private Set<@Valid CustomerPhoneDto> phones;
     
 
     // para pasar de dto a entidad
-    public static Customer toEntity( CustomerDto dto, Employee employee, Set<CustomerAddress> address){
-        Customer customer = new Customer();
+    public static Customer toEntity( CustomerDto dto){
 
-        if ( dto.getId() != null){
-            customer.setCustomerId( dto.getId());
+        // crear nuevo employee
+        Employee newEmployee = new Employee();
+        newEmployee.setEmployeeId( dto.getEmployeeId());
+
+        // builder
+        Customer newCustomer = Customer.builder()
+            .employee(newEmployee)
+            .firstName( dto.getFirstName() )
+            .lastName( dto.getLastName() )
+            .firstSurname( dto.getFirstSurname())
+            .lastSurname( dto.getLastSurname())
+            .documentNumber( dto.getDocumentNumber())
+            .documentType( DocumentType.valueOf( dto.getDocumentType() ))
+            .build();
+        
+        // seteo del id (si esta presente)
+        if ( dto.getCustomerId() != null){
+            newCustomer.setCustomerId( dto.getCustomerId());
         }
 
-        // setters
-        customer.setDocumentNumber( dto.getDocumentNumber());
-        customer.setDocumentType(  DocumentType.valueOf( dto.getDocumentType()));
-        customer.setFirstName( dto.getFirstName());
-        customer.setFirstSurname( dto.getFirstSurname());
-        customer.setLastName( dto.getLastName());
-        customer.setLastSurname( dto.getLastSurname());
-        customer.setEmployee(employee);
-        customer.setAddresses(address);
-
-        return customer;
+        return newCustomer;
     }
 }
 
