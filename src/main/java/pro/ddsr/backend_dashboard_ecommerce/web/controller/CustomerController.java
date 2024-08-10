@@ -84,12 +84,8 @@ public class CustomerController {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        Customer newCustomer = this.customerService.save(customer);
 
-        this.customerAddressService.saveAll( customer.getAddresses(), newCustomer.getCustomerId());
-        this.customerPhoneService.saveAll( customer.getPhones(), newCustomer.getCustomerId());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(newCustomer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.customerService.createNewCustomer(customer));
     }
 
     @PutMapping("/{id}")

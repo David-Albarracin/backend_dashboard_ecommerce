@@ -8,10 +8,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import jakarta.transaction.Transactional;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto.CustomerAddressDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto.CustomerDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto.CustomerPhoneDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.repository.CustomerAddressRepository;
+import pro.ddsr.backend_dashboard_ecommerce.domain.repository.CustomerPhoneRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.CustomerRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Customer;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.CustomerAddress;
@@ -24,7 +27,10 @@ public class CustomerService {
     CustomerRepository customerRepository;
 
     @Autowired
-    CustomerPhoneService customerPhoneService;
+    CustomerPhoneRepository customerPhoneRepository;
+
+    @Autowired
+    CustomerAddressRepository customerAddressRepository;
 
     
     
@@ -60,36 +66,59 @@ public class CustomerService {
         return this.customerRepository.save(customer);
     }
 
-    public Optional<Customer> update(Long id, CustomerDto customer) {
+    public Optional<Customer> update(Long id, CustomerDto dto) {
         Optional<Customer> optionalCustomer = this.customerRepository.findById(id);
         if (optionalCustomer.isPresent()) {
             // construir nueva entidad
-            Customer updateCustomer = CustomerDto.toEntity(customer);
+            dto.setCustomerId(id); // solo por si acaso xd
+            Customer updateCustomer = this.createNewCustomer(dto);
+            return Optional.of(updateCustomer);
 
-            // convertir direcciones de dto en entidades
-            Set<CustomerAddress> addresses = customer.getAddresses().stream()
-            .map(address -> {
-                address.setCustomerId(id);
-                CustomerAddress newAddress =  CustomerAddressDto.toEntity(address);
-                return newAddress;
-            })
-            .collect(Collectors.toSet());
             
-            // convertir telefonos de dto en entidades
-            Set<CustomerPhone> phones = customer.getPhones().stream()
-                .map( phone -> {
-                    phone.setCustomerId(id);
-                    CustomerPhone newPhone = CustomerPhoneDto.toEntity(phone);
-                    return newPhone;
-                })
-                .collect(Collectors.toSet());
-
-            // seteando telefonos y direcciones
-            updateCustomer.setAddresses(addresses);
-            updateCustomer.setPhones(phones);
-            
-            return Optional.of(this.customerRepository.save(updateCustomer));
         }
         return optionalCustomer;
+    }
+
+
+     /*
+     * Parsea un dto a una Orden  y sus detalles, y lo guarda
+    */
+    public Customer createNewCustomer(CustomerDto customerDto){
+        
+       // convertir el dto de cliente y guardar
+       Customer newCustomer = this.customerRepository.save(CustomerDto.toEntity(customerDto));
+        
+
+        // convertir las direcciones 
+        Set<CustomerAddress> addresses = customerDto.getAddresses().stream()
+            .map( dto -> {
+                dto.setCustomerId( newCustomer.getCustomerId());
+                return CustomerAddressDto.toEntity(dto);
+            })
+            .collect( Collectors.toSet());
+
+        // seteando y guardando
+        
+        this.customerAddressRepository.saveAll(addresses);
+            
+
+
+        // convertir los telefonos
+        Set<CustomerPhone> phones = customerDto.getPhones().stream()
+            .map( dto -> {
+                dto.setCustomerId( newCustomer.getCustomerId());
+                return CustomerPhoneDto.toEntity(dto);
+            })
+            .collect( Collectors.toSet());
+        
+        // seteando y guardando
+        this.customerPhoneRepository.saveAll(phones);
+
+        // SETS
+        newCustomer.setAddresses(addresses);
+        newCustomer.setPhones(phones);
+
+        return newCustomer;
+
     }
 }
