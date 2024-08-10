@@ -1,4 +1,4 @@
-package pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto;
+package pro.ddsr.backend_dashboard_ecommerce.domain.dto.orderDto;
 
 import java.time.LocalDate;
 import java.util.List;
