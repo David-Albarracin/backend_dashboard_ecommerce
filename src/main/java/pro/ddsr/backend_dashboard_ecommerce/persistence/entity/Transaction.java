@@ -14,7 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +35,6 @@ public class Transaction {
     Long transactionId;
 
     @Column(precision = 10, scale = 2, nullable = false)
-    @NotBlank(message = "Ingrese la cantidad")
     @NotNull(message = "No puede ser nulo")
     private BigDecimal amount;
     

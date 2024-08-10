@@ -1,4 +1,4 @@
-package pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto;
+package pro.ddsr.backend_dashboard_ecommerce.domain.dto.employeeDto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

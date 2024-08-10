@@ -1,9 +1,6 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.domain.dto.customerDto;
 
-
-
-import java.util.List;
 import java.util.Set;
 
 import jakarta.validation.constraints.NotBlank;

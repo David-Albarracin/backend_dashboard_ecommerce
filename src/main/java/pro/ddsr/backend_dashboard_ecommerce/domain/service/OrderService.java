@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import jakarta.transaction.Transactional;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDetailDto;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDto;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDtoOutput;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.orderDto.OrderDetailDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.orderDto.OrderDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.orderDto.OrderDtoOutput;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.CustomerRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderDetailRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderRepository;

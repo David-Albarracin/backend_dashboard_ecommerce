@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDto;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.OrderDto.OrderDtoOutput;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.orderDto.OrderDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.orderDto.OrderDtoOutput;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.OrderService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.crud.OrderProjection;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Order;

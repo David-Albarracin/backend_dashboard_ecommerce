@@ -1,4 +1,4 @@
-package pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto;
+package pro.ddsr.backend_dashboard_ecommerce.domain.dto.employeeDto;
 
 import java.time.LocalDate;
 import java.util.List;

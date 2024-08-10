@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto.EmployeeDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.employeeDto.EmployeeDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.EmployeeRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OfficeRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Employee;

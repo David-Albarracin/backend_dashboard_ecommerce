@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto.EmployeeDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.employeeDto.EmployeeDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.EmployeeService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Employee;
 import jakarta.validation.Valid;

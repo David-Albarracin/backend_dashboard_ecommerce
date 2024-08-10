@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.TransactionDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.TransactionService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Transaction;
 
@@ -71,7 +72,7 @@ public class TransactionController {
 
     @PostMapping
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody Transaction transaction, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody TransactionDto transaction, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
         }
@@ -80,7 +81,7 @@ public class TransactionController {
 
     @PutMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Transaction> update(@PathVariable Long id, @Valid @RequestBody Transaction transaction){
+    public ResponseEntity<Transaction> update(@PathVariable Long id, @Valid @RequestBody TransactionDto transaction){
         Optional<Transaction> transactionOptional = this.transactionService.update(id, transaction);
         if (transactionOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(transactionOptional.orElseThrow());
