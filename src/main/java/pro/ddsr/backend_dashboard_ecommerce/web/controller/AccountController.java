@@ -45,7 +45,6 @@ public class AccountController {
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody AccountDto account, BindingResult result){
-        System.out.println("AAAAAAA");
         
         if (result.hasFieldErrors()) {
             return validation(result);

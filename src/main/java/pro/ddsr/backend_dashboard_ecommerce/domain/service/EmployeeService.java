@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto.EmployeeDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto.EmployeesWithOrdersDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.EmployeeRepository;
 import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OfficeRepository;
+import pro.ddsr.backend_dashboard_ecommerce.domain.repository.OrderRepository;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Employee;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Office;
 
@@ -21,6 +23,9 @@ public class EmployeeService {
 
     @Autowired
     OfficeRepository officeRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
     
     @Transactional
     public Optional<Employee> delete(Long id) {
@@ -45,8 +50,8 @@ public class EmployeeService {
         return this.employeeRepository.findByOffice(id);
     }
 
-    public List<Employee> findAllEmployeesWithOrders() {
-        return employeeRepository.findAllEmployeesWithOrders();
+    public List<EmployeesWithOrdersDto> findAllEmployeesWithOrders() {
+        return orderRepository.findAllEmployeesWithOrders();
     }
 
     public Employee save(EmployeeDto dto) {
@@ -77,7 +82,7 @@ public class EmployeeService {
         Optional<Employee> optionalEmployee = this.employeeRepository.findById(id);
 
         if (optionalEmployee.isPresent()) {
-                   
+
             //SETS
             // nueva oficina 
             Office office = new Office();

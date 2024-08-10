@@ -18,7 +18,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT e FROM Employee e INNER JOIN e.office eo WHERE eo.officeId =?1")
     List<Employee> findByOffice(Long idOffice);
 
-    // CU16
-    @Query("SELECT e FROM Employee e INNER JOIN e.customers ec INNER JOIN ec.orders eco")
-    List<Employee> findAllEmployeesWithOrders();
+    
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto.EmployeeDto;
+import pro.ddsr.backend_dashboard_ecommerce.domain.dto.EmployeeDto.EmployeesWithOrdersDto;
 import pro.ddsr.backend_dashboard_ecommerce.domain.service.EmployeeService;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Employee;
 import jakarta.validation.Valid;
@@ -62,8 +63,8 @@ public class EmployeeController {
     // CU16
     @GetMapping("/withorders")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Employee>> viewEmployeesWithOrders(){
-        List<Employee> listEmployee  = employeeService.findAllEmployeesWithOrders();
+    public ResponseEntity<List<EmployeesWithOrdersDto>> viewEmployeesWithOrders(){
+        List<EmployeesWithOrdersDto> listEmployee  = employeeService.findAllEmployeesWithOrders();
         if (listEmployee.isEmpty()){
             return ResponseEntity.noContent().build();
         }
