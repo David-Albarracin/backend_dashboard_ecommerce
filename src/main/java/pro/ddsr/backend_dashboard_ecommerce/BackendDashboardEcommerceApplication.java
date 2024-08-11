@@ -9,13 +9,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import pro.ddsr.backend_dashboard_ecommerce.domain.repository.AccountRepository;
-import pro.ddsr.backend_dashboard_ecommerce.domain.repository.PermissionRepository;
-import pro.ddsr.backend_dashboard_ecommerce.domain.repository.RoleRepository;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Account;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Role;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.Permission;
-import pro.ddsr.backend_dashboard_ecommerce.persistence.entity.enumObj.RoleEnum;
+import pro.ddsr.backend_dashboard_ecommerce.account.domain.repository.AccountRepository;
+import pro.ddsr.backend_dashboard_ecommerce.account.persistence.Account;
+import pro.ddsr.backend_dashboard_ecommerce.permission.domain.repository.PermissionRepository;
+import pro.ddsr.backend_dashboard_ecommerce.permission.persistence.Permission;
+import pro.ddsr.backend_dashboard_ecommerce.role.domain.repository.RoleRepository;
+import pro.ddsr.backend_dashboard_ecommerce.role.persistence.Role;
+import pro.ddsr.backend_dashboard_ecommerce.role.persistence.RoleEnum;
 
 @SpringBootApplication
 public class BackendDashboardEcommerceApplication {
