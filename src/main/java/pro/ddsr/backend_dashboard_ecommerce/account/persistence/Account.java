@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import pro.ddsr.backend_dashboard_ecommerce.persistence.Audit;
 import pro.ddsr.backend_dashboard_ecommerce.role.persistence.Role;
 
@@ -30,6 +31,7 @@ import pro.ddsr.backend_dashboard_ecommerce.role.persistence.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name="account")
 public class Account {
 
@@ -55,7 +57,7 @@ public class Account {
     @Column(name = "credential_no_expired")
     boolean credentialNoExpired;
 
-    @ManyToMany( fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "account_role",
         joinColumns = @JoinColumn ( name = "account_id" ,referencedColumnName = "account_id"),

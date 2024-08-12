@@ -42,13 +42,9 @@ public class EmployeeDto {
     @NotNull(message = "No puede ser nulo")
     private String phoneNumber;
 
-  
-
     @NotNull(message = "No puede ser nulo")
     private Long officeId;
 
-  
-   
 
     @NotNull(message = "No puede ser nulo")
     private Integer extension;

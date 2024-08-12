@@ -1,6 +1,8 @@
 
 package pro.ddsr.backend_dashboard_ecommerce.customerPhone.persistence;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,6 +47,7 @@ public class CustomerPhone {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @NotNull(message = "No puede ser nulo")
+    @JsonBackReference
     private Customer customer;
 
     public enum TelephoneType {

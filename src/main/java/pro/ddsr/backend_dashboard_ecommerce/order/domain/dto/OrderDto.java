@@ -67,6 +67,7 @@ public class OrderDto {
         Order newOrder = Order.builder()
             .orderDate( dto.getOrderDate())
             .expectedDate( dto.getExpectedDate())
+            .commentary(dto.getCommentary() )
             .status( newOrderStatus)
             .customer(newCustomer)
             .orderType( OrderType.valueOf( dto.getOrderType()))

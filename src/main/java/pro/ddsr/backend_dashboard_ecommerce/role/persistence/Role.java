@@ -3,10 +3,12 @@ package pro.ddsr.backend_dashboard_ecommerce.role.persistence;
 
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import pro.ddsr.backend_dashboard_ecommerce.permission.persistence.Permission;
 
 @Setter
@@ -27,6 +30,7 @@ import pro.ddsr.backend_dashboard_ecommerce.permission.persistence.Permission;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name="role")
 public class Role {
 
@@ -39,7 +43,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     RoleEnum name;
 
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(
         name = "role_permission",
         joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"),

@@ -46,7 +46,7 @@ public class CustomerAddress {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @NotNull(message = "No puede ser nulo")
-    @JsonBackReference
+    @JsonBackReference 
     private Customer customer;
 
     @ManyToOne

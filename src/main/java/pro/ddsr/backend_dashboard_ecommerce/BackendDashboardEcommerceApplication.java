@@ -57,7 +57,7 @@ public class BackendDashboardEcommerceApplication {
 			Role adminRole = new Role();
 			adminRole.setName(RoleEnum.ADMIN);
 			adminRole.setPermissions(Set.of(readPermission, writePermission));
-
+			System.out.println(adminRole.toString());
 			// Guardar rol en la base de datos
 			//roleRepository.save(adminRole);
 
@@ -71,6 +71,8 @@ public class BackendDashboardEcommerceApplication {
 			testAccount.setRoles(Set.of(adminRole));
 			// Obtener el conjunto de roles
 			Set<Role> roles = testAccount.getRoles();
+
+			System.out.println(roles.toString());
 
 			System.out.println("HHHHHHHHHHHEYYYYYYYYYYYYYY ----> ");
 			// Imprimir cada rol

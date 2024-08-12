@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
@@ -18,6 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name="permission")
 public class Permission {
     @Id
@@ -25,4 +27,7 @@ public class Permission {
     Long permissionId;
 
     String name;
+
+    
+
 }

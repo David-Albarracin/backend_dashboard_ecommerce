@@ -96,7 +96,7 @@ public class OrderController {
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody OrderDto orderDto, BindingResult result){
         // validaciones de validator de spring
         if (result.hasFieldErrors()) {
-            return ResponseEntity.badRequest().body(result);
+            return validation(result);
         }
 
         // validaciones personalizadas
