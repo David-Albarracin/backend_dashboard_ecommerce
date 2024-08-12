@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import pro.ddsr.backend_dashboard_ecommerce.office.domain.dto.OfficeDto;
 import pro.ddsr.backend_dashboard_ecommerce.office.domain.service.OfficeService;
 import pro.ddsr.backend_dashboard_ecommerce.office.persistence.Office;
 
@@ -48,7 +50,7 @@ public class OfficeController {
 
     @PostMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody Office office, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody OfficeDto office, BindingResult result){
         if (result.hasFieldErrors()) {
             return validation(result);
         }
@@ -57,7 +59,7 @@ public class OfficeController {
 
     @PutMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Office> update(@PathVariable Long id, @Valid @RequestBody Office office){
+    public ResponseEntity<Office> update(@PathVariable Long id, @Valid @RequestBody OfficeDto office){
         Optional<Office> officeOptional = this.officeService.update(id, office);
         if (officeOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(officeOptional.orElseThrow());
@@ -67,14 +69,20 @@ public class OfficeController {
 
     @DeleteMapping("/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Office> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id){
         //Office office = new Office();
         //office.setId(id);
-        Optional<Office> optionalOffice = this.officeService.delete(id);
-        if (optionalOffice.isPresent()){
-            return ResponseEntity.ok(optionalOffice.orElseThrow());
+        try {
+            Optional<Office> optionalOffice = this.officeService.delete(id);
+            if (optionalOffice.isPresent()){
+                return ResponseEntity.ok(optionalOffice.orElseThrow());
+            }
+            return ResponseEntity.notFound().build();
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("No se puede eliminar una oficina que tiene empleados");
         }
-        return ResponseEntity.notFound().build();
+        
     }
 
     private ResponseEntity<?> validation(BindingResult result) {
